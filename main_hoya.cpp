@@ -38,13 +38,13 @@ using namespace cadmium::celldevs;
 using TIME = float;
 
 /*************** Loggers *******************/
-static ofstream out_messages("../simulation_results/pandemic_hoya/output_messages.txt");
+static ofstream out_messages("../simulation_results/pandemic_hoya_age_json/output_messages.txt");
 struct oss_sink_messages{
     static ostream& sink(){
         return out_messages;
     }
 };
-static ofstream out_state("../simulation_results/pandemic_hoya/state.txt");
+static ofstream out_state("../simulation_results/pandemic_hoya_age_json/state.txt");
 struct oss_sink_state{
     static ostream& sink(){
         return out_state;
@@ -66,7 +66,7 @@ int main(int argc, char ** argv) {
         return -1;
     }
 
-    hoya_coupled<TIME> test = hoya_coupled<TIME>("pandemic_hoya");
+    hoya_coupled<TIME> test = hoya_coupled<TIME>("pandemic_hoya_age_json");
     std::string scenario_config_file_path = argv[1];
     test.add_lattice_json(scenario_config_file_path);
     test.couple_cells();

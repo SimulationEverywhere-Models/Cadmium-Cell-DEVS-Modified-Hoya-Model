@@ -43,7 +43,7 @@ public:
 
     void add_grid_cell_json(std::string const &cell_type, cell_map<sir, mc> &map, std::string const &delay_id,
                             nlohmann::json const &config) override {
-        if (cell_type == "hoya") {
+        if (cell_type == "hoya_age") {
             auto conf = config.get<typename hoya_cell<T>::config_type>();
             this->template add_cell<hoya_cell>(map, delay_id, conf);
         } else throw std::bad_typeid();

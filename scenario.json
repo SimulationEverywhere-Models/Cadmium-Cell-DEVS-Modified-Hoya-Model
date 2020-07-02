@@ -3,17 +3,18 @@
     "shape": [50, 50],
     "wrapped": true,
     "default_delay": "inertial",
-    "default_cell_type": "hoya",
+    "default_cell_type": "hoya_age",
     "default_state": {
       "population": 100,
+      "age_divided_populations": [ 0.18, 0.07, 0.27, 0.31, 0.17 ],
       "susceptible": 1,
       "infected": 0,
       "recovered": 0
     },
     "default_config": {
-      "hoya": {
-        "virulence": 0.6,
-        "recovery": 0.4
+      "hoya_age": {
+        "virulence": [ 0.15, 0.27, 1.14, 0.96, 0.48 ],
+        "recovery": [ 0.4, 0.4, 0.4, 0.4, 0.4 ]
       }
     },
     "neighborhood": [
@@ -24,14 +25,6 @@
           "connection": 1,
           "movement": 0.5
         }
-      },
-      {
-        "type": "custom",
-        "neighbors": [[0, 0]],
-        "vicinity": {
-          "connection": 1,
-          "movement": 1
-        }
       }
     ]
   },
@@ -40,16 +33,10 @@
       "cell_id": [24, 24],
       "state": {
         "population": 100,
+        "age_divided_populations": [ 0.18, 0.07, 0.27, 0.31, 0.17 ],
         "susceptible": 0.7,
         "infected": 0.3,
         "recovered": 0
-      }
-    },
-    {
-      "cell_id": [24, 23],
-      "config": {
-        "virulence": 0,
-        "recovery": 1
       }
     }
   ]
