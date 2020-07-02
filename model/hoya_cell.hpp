@@ -39,7 +39,7 @@ using namespace cadmium::celldevs;
 /******COMPLEX STATE STRUCTURE*******/
 /************************************/
 struct sir {
-	std::vector<float> age_divided_populations;
+    std::vector<float> age_divided_populations;
     unsigned int population;
     float susceptible;
     float infected;
@@ -49,30 +49,31 @@ struct sir {
 };
 // Required for comparing states and detect any change
 inline bool operator != (const sir &x, const sir &y) {
-	if(x.population != y.population || x.age_divided_populations.size() != y.age_divided_populations.size() || x.susceptible != y.susceptible || x.infected != y.infected || x.recovered != y.recovered) {
-		return true;
-	}
-	for(auto i = 0; i < x.age_divided_populations.size(); i++) {
-		if(x.age_divided_populations[i] != y.age_divided_populations[i]) {
-			return true;
-		}
-	}
-	return false;
+    if(x.population != y.population || x.age_divided_populations.size() != y.age_divided_populations.size() || x.susceptible != y.susceptible || x.infected != y.infected || x.recovered != y.recovered) {
+        return true;
+    }
+    for(auto i = 0; i < x.age_divided_populations.size(); i++) {
+        if(x.age_divided_populations[i] != y.age_divided_populations[i]) {
+            return true;
+        }
+    }
+    return false;
 }
 // Required if you want to use transport delay (priority queue has to sort messages somehow)
 inline bool operator < (const sir& lhs, const sir& rhs){ return true; }
 
 // Required for printing the state of the cell
 std::ostream &operator << (std::ostream &os, const sir &x) {
-	os << "<" << x.population << ",";
-	
-	for(auto sub_population: x.age_divided_populations) {
-		os << sub_population << ",";
-	}
-	
-	os << x.susceptible << "," << x.infected << "," << x.recovered <<">";
-	return os;
+    os << "<" << x.population << ",";
+    
+    for(auto sub_population: x.age_divided_populations) {
+        os << sub_population << ",";
+    }
+    
+    os << x.susceptible << "," << x.infected << "," << x.recovered <<">";
+    return os;
 }
+
 // Required for creating SIR objects from JSON file
 void from_json(const json& j, sir &s) {
     j.at("population").get_to(s.population);
@@ -86,10 +87,10 @@ void from_json(const json& j, sir &s) {
 /*****COMPLEX VICINITY STRUCTURE*****/
 /************************************/
 struct mc {
-    float connection;
-    float movement;
-    mc() : connection(0), movement(0) {}  // a default constructor is required
-    mc(float c, float m) : connection(c), movement(m) {}
+    std::vector<float> connection;
+    std::vector<float> movement;
+    mc() : connection({ 0 }), movement({ 0 }) {}  // a default constructor is required
+    mc(std::vector<float> c, std::vector<float> m) : connection(c), movement(m) {}
 };
 // Required for creating movement-connection objects from JSON file
 void from_json(const json& j, mc &m) {
@@ -137,9 +138,9 @@ public:
         sir res = state.current_state;
         float new_i = new_infections();
         float new_r = 0;
-		for(int i = 0; i < res.age_divided_populations.size(); i++) {
-			new_r += res.infected * res.age_divided_populations[i] * recovery[i];
-		}
+        for(int i = 0; i < res.age_divided_populations.size(); i++) {
+            new_r += res.infected * res.age_divided_populations[i] * recovery[i];
+        }
         res.recovered = std::round((res.recovered + new_r) * 100) / 100;
         res.infected = std::round((res.infected + new_i - new_r) * 100) / 100;
         res.susceptible = 1 - res.infected - res.recovered;
@@ -155,9 +156,9 @@ public:
         for(auto neighbor: neighbors) {
             sir n = state.neighbors_state.at(neighbor);
             mc v = state.neighbors_vicinity.at(neighbor);
-			for(int i = 0; i < n.age_divided_populations.size(); i++) {
-				aux += n.infected * (float) n.population * n.age_divided_populations[i] * v.movement * v.connection * virulence[i];
-			}
+            for(int i = 0; i < n.age_divided_populations.size(); i++) {
+                aux += n.infected * (float) n.population * n.age_divided_populations[i] * v.movement[i] * v.connection[i] * virulence[i];
+            }
         }
         sir s = state.current_state;
         return std::min(s.susceptible, s.susceptible * aux / (float) s.population);
