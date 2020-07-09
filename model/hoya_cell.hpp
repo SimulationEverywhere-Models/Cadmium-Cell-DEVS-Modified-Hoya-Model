@@ -76,7 +76,19 @@ inline bool operator < (const sir& lhs, const sir& rhs){ return true; }
 
 // Required for printing the state of the cell
 std::ostream &operator << (std::ostream &os, const sir &x) {
-    os << "<" << x.population << "," << x.susceptible << "," << x.infected << "," << x.recovered <<">";
+    os << "<" << x.population;
+	
+	for(int i = 0; i < x.susceptible.size(); i++) {
+		os << "," << x.susceptible[i];
+	}
+	for(int i = 0; i < x.infected.size(); i++) {
+		os << "," << x.infected[i];
+	}
+	for(int i = 0; i < x.recovered.size(); i++) {
+		os << "," << x.recovered[i];
+	}
+	
+	os <<">";
     return os;
 }
 
