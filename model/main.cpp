@@ -29,7 +29,7 @@
 #include <cadmium/modeling/dynamic_coupled.hpp>
 #include <cadmium/engine/pdevs_dynamic_runner.hpp>
 #include <cadmium/logger/common_loggers.hpp>
-#include "../model/hoya_coupled.hpp"
+#include "hoya_coupled.hpp"
 
 using namespace std;
 using namespace cadmium;
@@ -38,13 +38,13 @@ using namespace cadmium::celldevs;
 using TIME = float;
 
 /*************** Loggers *******************/
-static ofstream out_messages("../simulation_results/pandemic_hoya_age_json/output_messages.txt");
+static ofstream out_messages("../logs/output_messages.txt");
 struct oss_sink_messages{
     static ostream& sink(){
         return out_messages;
     }
 };
-static ofstream out_state("../simulation_results/pandemic_hoya_age_json/state.txt");
+static ofstream out_state("../logs/state.txt");
 struct oss_sink_state{
     static ostream& sink(){
         return out_state;

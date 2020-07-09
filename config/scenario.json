@@ -6,15 +6,15 @@
     "default_cell_type": "hoya_age",
     "default_state": {
       "population": 100,
-      "age_divided_populations": [ 0.18, 0.07, 0.27, 0.31, 0.17 ],
-      "susceptible": 1,
-      "infected": 0,
-      "recovered": 0
+      "susceptible": [0.25, 0.25, 0.25, 0.25],
+      "infected": [0, 0, 0, 0],
+      "recovered": [0, 0, 0, 0]
     },
     "default_config": {
       "hoya_age": {
-        "virulence": [ 0.15, 0.27, 1.14, 0.96, 0.48 ],
-        "recovery": [ 0.4, 0.4, 0.4, 0.4, 0.4 ]
+        "virulence": [ 0.6, 0.6, 0.6, 0.6],
+        "recovery": [ 0.4, 0.4, 0.4, 0.4],
+        "precision": 1000
       }
     },
     "neighborhood": [
@@ -22,8 +22,8 @@
         "type": "von_neumann",
         "range": 1,
         "vicinity": {
-          "connection": [ 1, 1, 1, 1, 1 ],
-          "movement": [ 0.5, 0.5, 0.5, 0.5, 0.5 ]
+          "connection": [ 1, 1, 1, 1],
+          "movement": [0.5, 0.5, 0.5, 0.5]
         }
       }
     ]
@@ -33,10 +33,9 @@
       "cell_id": [24, 24],
       "state": {
         "population": 100,
-        "age_divided_populations": [ 0.18, 0.07, 0.27, 0.31, 0.17 ],
-        "susceptible": 0.7,
-        "infected": 0.3,
-        "recovered": 0
+        "susceptible": [0.2, 0.2, 0.2, 0.2],
+        "infected": [0.05, 0.05, 0.05, 0.05],
+        "recovered": [0, 0, 0, 0]
       }
     }
   ]
