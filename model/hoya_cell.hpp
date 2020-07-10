@@ -76,19 +76,26 @@ inline bool operator < (const sir& lhs, const sir& rhs){ return true; }
 
 // Required for printing the state of the cell
 std::ostream &operator << (std::ostream &os, const sir &x) {
+	float total_susceptible = 0.0;
+	float total_infected = 0.0;
+	float total_recovered = 0.0;
+	
     os << "<" << x.population;
 	
 	for(int i = 0; i < x.susceptible.size(); i++) {
 		os << "," << x.susceptible[i];
+		total_susceptible += x.susceptible[i];
 	}
 	for(int i = 0; i < x.infected.size(); i++) {
 		os << "," << x.infected[i];
+		total_infected += x.infected[i];
 	}
 	for(int i = 0; i < x.recovered.size(); i++) {
 		os << "," << x.recovered[i];
+		total_recovered += x.recovered[i];
 	}
 	
-	os <<">";
+	os << "," << total_susceptible << "," << total_infected << "," << total_recovered << ">";
     return os;
 }
 
@@ -119,13 +126,15 @@ void from_json(const json& j, mc &m) {
 /******COMPLEX CONFIG STRUCTURE******/
 /************************************/
 struct config {
+    std::vector<float> susceptibility;
     std::vector<float> virulence;
     std::vector<float> recovery;
     float precision;
-    config(): virulence({0.6}), recovery({0.4}), precision(100) {}
-    config(std::vector<float> &v, std::vector<float> &r, float p): virulence(v), recovery(r), precision(p) {}
+    config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), precision(100) {}
+    config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, float p): susceptibility(s), virulence(v), recovery(r), precision(p) {}
 };
 void from_json(const json& j, config &v) {
+    j.at("susceptibility").get_to(v.susceptibility);
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
     j.at("precision").get_to(v.precision);
@@ -141,6 +150,7 @@ public:
     using grid_cell<T, sir, mc>::neighbors;
 
     using config_type = config;  // IMPORTANT FOR THE JSON
+    std::vector<float> susceptibility;
     std::vector<float> virulence;
     std::vector<float> recovery;
     std::vector<float> age_ratio;
@@ -151,6 +161,7 @@ public:
     hoya_cell(cell_position const &cell_id, cell_unordered<mc> const &neighborhood, sir &initial_state,
               cell_map<sir, mc> const &map_in, std::string const &delay_id, config &config) :
             grid_cell<T, sir, mc>(cell_id, neighborhood, initial_state, map_in, delay_id) {
+        susceptibility = config.susceptibility;
         virulence = config.virulence;
         recovery = config.recovery;
         precision = config.precision;
@@ -201,7 +212,7 @@ public:
         for (int i = 0; i < n_age_segments(); i++) {
             if (aux[i] > 0)
                 aux[i] += 0;
-            res.push_back(std::min(last_state.susceptible[i], last_state.susceptible[i] * aux[i] / (float)last_state.population));
+            res.push_back(std::min(last_state.susceptible[i], last_state.susceptible[i] * aux[i] * susceptibility[i] / (float)last_state.population));
         }
         return res;
     }

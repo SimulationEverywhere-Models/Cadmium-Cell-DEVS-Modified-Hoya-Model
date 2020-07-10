@@ -1,42 +1,6109 @@
 {
-  "scenario": {
-    "shape": [50, 50],
-    "wrapped": true,
-    "default_delay": "inertial",
-    "default_cell_type": "hoya_age",
-    "default_state": {
-      "population": 100,
-      "susceptible": [0.25, 0.25, 0.25, 0.25],
-      "infected": [0, 0, 0, 0],
-      "recovered": [0, 0, 0, 0]
-    },
-    "default_config": {
-      "hoya_age": {
-        "virulence": [ 0.6, 0.6, 0.6, 0.6],
-        "recovery": [ 0.4, 0.4, 0.4, 0.4],
-        "precision": 1000
-      }
-    },
-    "neighborhood": [
-      {
-        "type": "von_neumann",
-        "range": 1,
-        "vicinity": {
-          "connection": [ 1, 1, 1, 1],
-          "movement": [0.5, 0.5, 0.5, 0.5]
-        }
-      }
-    ]
-  },
-  "cells": [
-    {
-      "cell_id": [24, 24],
-      "state": {
-        "population": 100,
-        "susceptible": [0.2, 0.2, 0.2, 0.2],
-        "infected": [0.05, 0.05, 0.05, 0.05],
-        "recovered": [0, 0, 0, 0]
-      }
-    }
-  ]
+	"scenario": {
+		"shape": [ 15, 15 ],
+		"wrapped": false,
+		"default_delay": "inertial",
+		"default_cell_type": "hoya_age",
+		"default_state": {
+			"population": 100,
+			"susceptible": [ 0.25, 0.25, 0.25, 0.25 ],
+			"infected": [ 0, 0, 0, 0 ],
+			"recovered": [ 0, 0, 0, 0 ]
+		},
+		"default_config": {
+			"hoya_age": {
+				"susceptibility": [ 0.1, 0.8, 0.7, 0.8 ],
+				"virulence": [ 0.4, 0.6, 0.8, 0.6 ],
+				"recovery": [ 0.6, 0.6, 0.6, 0.6 ],
+				"precision": 1000
+			}
+		},
+		"neighborhood": [
+			{
+				"type": "von_neumann",
+				"range": 1,
+				"vicinity": {
+					"connection": [ 1, 1, 1, 1 ],
+					"movement": [ 0.5, 0.5, 0.5, 0.5 ]
+				}
+			}
+		]
+	},
+	"cells": [
+		{
+			"cell_id": [
+				0,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					0.99
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0.01
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.495,
+					0.495
+				],
+				"infected": [
+					0,
+					0,
+					0.005,
+					0.005
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.99,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0.01,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.495,
+					0.495,
+					0
+				],
+				"infected": [
+					0,
+					0.005,
+					0.005,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.32999999999999996,
+					0.32999999999999996,
+					0.32999999999999996
+				],
+				"infected": [
+					0,
+					0.003333333333333333,
+					0.003333333333333333,
+					0.003333333333333333
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.495,
+					0,
+					0.495
+				],
+				"infected": [
+					0,
+					0.005,
+					0,
+					0.005
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.99,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0.01,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.495,
+					0.495,
+					0,
+					0
+				],
+				"infected": [
+					0.005,
+					0.005,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.32999999999999996,
+					0.32999999999999996,
+					0,
+					0.32999999999999996
+				],
+				"infected": [
+					0.003333333333333333,
+					0.003333333333333333,
+					0,
+					0.003333333333333333
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.2475,
+					0.2475,
+					0.2475,
+					0.2475
+				],
+				"infected": [
+					0.0025,
+					0.0025,
+					0.0025,
+					0.0025
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.32999999999999996,
+					0.32999999999999996,
+					0.32999999999999996,
+					0
+				],
+				"infected": [
+					0.003333333333333333,
+					0.003333333333333333,
+					0.003333333333333333,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.495,
+					0,
+					0.495,
+					0
+				],
+				"infected": [
+					0.005,
+					0,
+					0.005,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.32999999999999996,
+					0,
+					0.32999999999999996,
+					0.32999999999999996
+				],
+				"infected": [
+					0.003333333333333333,
+					0,
+					0.003333333333333333,
+					0.003333333333333333
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.495,
+					0,
+					0,
+					0.495
+				],
+				"infected": [
+					0.005,
+					0,
+					0,
+					0.005
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				0,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.99,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0.01,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				1,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				2,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				3,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				4,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				5,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				6,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				7,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				8,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				9,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				10,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				11,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				12,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				13,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				0
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0,
+					1
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				1
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					0.5,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				2
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0,
+					1,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				3
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				4
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				5
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					0.5,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				6
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0,
+					1,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				7
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0.5,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				8
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				9
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.25,
+					0.25,
+					0.25,
+					0.25
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				10
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0.3333333333333333,
+					0.3333333333333333,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				11
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0.5,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				12
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.3333333333333333,
+					0,
+					0.3333333333333333,
+					0.3333333333333333
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				13
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					0.5,
+					0,
+					0,
+					0.5
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		},
+		{
+			"cell_id": [
+				14,
+				14
+			],
+			"state": {
+				"population": 100,
+				"susceptible": [
+					1,
+					0,
+					0,
+					0
+				],
+				"infected": [
+					0,
+					0,
+					0,
+					0
+				],
+				"recovered": [
+					0,
+					0,
+					0,
+					0
+				]
+			}
+		}
+	]
 }
