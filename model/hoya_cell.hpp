@@ -40,6 +40,7 @@ using namespace cadmium::celldevs;
 /************************************/
 struct sir {
     unsigned int population;
+	unsigned int phase;
     std::vector<float> susceptible;
     std::vector<float> infected;
     std::vector<float> recovered;
@@ -76,19 +77,25 @@ inline bool operator < (const sir& lhs, const sir& rhs){ return true; }
 
 // Required for printing the state of the cell
 std::ostream &operator << (std::ostream &os, const sir &x) {
-    os << "<" << x.population;
+	float total_susceptible = 0;
+	float total_infected = 0;
+	float total_recovered = 0;
+    os << "<" << x.population << "," << x.phase;
 	
 	for(int i = 0; i < x.susceptible.size(); i++) {
+		total_susceptible += x.susceptible[i];
 		os << "," << x.susceptible[i];
 	}
 	for(int i = 0; i < x.infected.size(); i++) {
+		total_infected += x.infected[i];
 		os << "," << x.infected[i];
 	}
 	for(int i = 0; i < x.recovered.size(); i++) {
+		total_recovered += x.recovered[i];
 		os << "," << x.recovered[i];
 	}
 	
-	os <<">";
+	os << "," << total_susceptible << "," << total_infected << "," << total_recovered << ">";
     return os;
 }
 
@@ -121,13 +128,19 @@ void from_json(const json& j, mc &m) {
 struct config {
     std::vector<float> virulence;
     std::vector<float> recovery;
+	std::vector<std::vector<float>> phase_penalties;
+	int phase_duration;
+	std::vector<float> disobedience;
     float precision;
-    config(): virulence({0.6}), recovery({0.4}), precision(100) {}
-    config(std::vector<float> &v, std::vector<float> &r, float p): virulence(v), recovery(r), precision(p) {}
+    config(): virulence({0.6}), recovery({0.4}), phase_penalties({{0}}), phase_duration(0), disobedience({0.0}), precision(100) {}
+    config(std::vector<float> &v, std::vector<float> &r, std::vector<std::vector<float>> &pp, int &pd, std::vector<float> &d, float p): virulence(v), recovery(r), phase_duration(pd), disobedience(d), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
+    j.at("phase_penalties").get_to(v.phase_penalties);
+    j.at("phase_duration").get_to(v.phase_duration);
+    j.at("disobedience").get_to(v.disobedience);
     j.at("precision").get_to(v.precision);
 }
 
@@ -143,6 +156,9 @@ public:
     using config_type = config;  // IMPORTANT FOR THE JSON
     std::vector<float> virulence;
     std::vector<float> recovery;
+	std::vector<std::vector<float>> phase_penalties;
+    int phase_duration;
+    std::vector<float> disobedience;
     std::vector<float> age_ratio;
     float precision = 100;
 
@@ -153,6 +169,9 @@ public:
             grid_cell<T, sir, mc>(cell_id, neighborhood, initial_state, map_in, delay_id) {
         virulence = config.virulence;
         recovery = config.recovery;
+        phase_penalties = config.phase_penalties;
+        phase_duration = config.phase_duration;
+        disobedience = config.disobedience;
         precision = config.precision;
         age_ratio = std::vector<float>();
         auto s = state.current_state;
@@ -177,6 +196,9 @@ public:
             res.infected[i] = std::round((res.infected[i] + new_i[i] - new_r[i]) * precision) / precision;
             res.susceptible[i] = age_ratio[i] - res.recovered[i] - res.infected[i];
         }
+		
+		res.phase = next_phase(res.phase);
+		
         return res;
     }
     // It returns the delay to communicate cell's new state.
@@ -193,8 +215,10 @@ public:
             sir n = state.neighbors_state.at(neighbor);
             mc v = state.neighbors_vicinity.at(neighbor);
             float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
+			float mobility_correction;
             for(int i = 0; i < n_age_segments(); i++) {
-                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i];
+				mobility_correction = disobedience[i] + (1 - disobedience[i]) * phase_penalties[n.phase][i];
+                aux[i] += total_infected * n.population * v.movement[i] * mobility_correction * v.connection[i] * virulence[i];
             }
         }
         std::vector<float> res = std::vector<float>();
@@ -213,6 +237,14 @@ public:
         }
         return new_r;
     }
+	
+	unsigned int next_phase(unsigned int phase) const {
+        // First, check if phase should be incremented
+		// (The phase is only incremented periodically)
+        int next = (fmod(simulation_clock, phase_duration) == phase_duration - 1)? phase + 1 : phase;
+        // Then, check that the phase number is within the bounds
+        return next % phase_penalties.size();
+	}
 };
 
 #endif //CADMIUM_CELLDEVS_PANDEMIC_CELL_HPP

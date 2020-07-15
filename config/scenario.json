@@ -14,6 +14,13 @@
       "hoya_age": {
         "virulence": [ 0.6, 0.6, 0.6, 0.6],
         "recovery": [ 0.4, 0.4, 0.4, 0.4],
+        "phase_penalties": [ 
+			[1, 1, 1, 1],
+			[0.3, 0.5, 0.5, 0.4],
+			[0.0, 0.2, 0.2, 0.1]
+		],
+        "phase_duration": 4,
+        "disobedience": [ 0.0, 0.0, 0.0, 0.0 ],
         "precision": 1000
       }
     },
