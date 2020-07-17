@@ -137,15 +137,19 @@ struct config {
     std::vector<float> virulence;
     std::vector<float> recovery;
     std::vector<float> mortality;
+	float infected_capacity;
+	float over_capacity_modifier;
     float precision;
-    config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), precision(100) {}
-    config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float p): susceptibility(s), virulence(v), recovery(r), mortality(m), precision(p) {}
+    config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), precision(100), infected_capacity(0.1), over_capacity_modifier(1.5) {}
+    config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float &c, float &oc, float p): susceptibility(s), virulence(v), recovery(r), mortality(m), infected_capacity(c), over_capacity_modifier(oc), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("susceptibility").get_to(v.susceptibility);
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
     j.at("mortality").get_to(v.mortality);
+    j.at("infected_capacity").get_to(v.infected_capacity);
+    j.at("over_capacity_modifier").get_to(v.over_capacity_modifier);
     j.at("precision").get_to(v.precision);
 }
 
@@ -163,6 +167,8 @@ public:
     std::vector<float> virulence;
     std::vector<float> recovery;
     std::vector<float> mortality;
+	float infected_capacity;
+	float over_capacity_modifier;
     std::vector<float> age_ratio;
     float precision = 100;
 
@@ -175,6 +181,8 @@ public:
         virulence = config.virulence;
         recovery = config.recovery;
         mortality = config.mortality;
+		infected_capacity = config.infected_capacity;
+		over_capacity_modifier = config.over_capacity_modifier;
         precision = config.precision;
         age_ratio = std::vector<float>();
         auto s = state.current_state;
@@ -240,9 +248,16 @@ public:
 
     std::vector<float> new_deaths(sir const &last_state) const {
         std::vector<float> new_d = std::vector<float>();
+		float total_infected = 0;
         for(int i = 0; i < n_age_segments(); i++) {
+			total_infected += last_state.infected[i];
             new_d.push_back(last_state.infected[i] * mortality[i]);
         }
+		if(total_infected > infected_capacity) {
+			for(int i = 0; i < n_age_segments(); i++) {
+				new_d[i] *= over_capacity_modifier;
+			}
+		}
         return new_d;
     }
 };
