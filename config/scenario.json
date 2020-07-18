@@ -12,8 +12,10 @@
     },
     "default_config": {
       "hoya_age": {
-        "virulence": [ 0.6, 0.6, 0.6, 0.6],
-        "recovery": [ 0.4, 0.4, 0.4, 0.4],
+        "virulence": [ 0.6, 0.6, 0.6, 0.6 ],
+        "recovery": [ 0.3, 0.3, 0.3, 0.3 ],
+		"mask_use": [ 0, 0.25, 0.8, 0.6 ],
+		"mask_reduction": 0.5,
         "precision": 1000
       }
     },

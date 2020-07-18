@@ -76,19 +76,26 @@ inline bool operator < (const sir& lhs, const sir& rhs){ return true; }
 
 // Required for printing the state of the cell
 std::ostream &operator << (std::ostream &os, const sir &x) {
+	float total_susceptible = 0;
+	float total_infected = 0;
+	float total_recovered = 0;
+	
     os << "<" << x.population;
 	
 	for(int i = 0; i < x.susceptible.size(); i++) {
+		total_susceptible += x.susceptible[i];
 		os << "," << x.susceptible[i];
 	}
 	for(int i = 0; i < x.infected.size(); i++) {
+		total_infected += x.infected[i];
 		os << "," << x.infected[i];
 	}
 	for(int i = 0; i < x.recovered.size(); i++) {
+		total_recovered += x.recovered[i];
 		os << "," << x.recovered[i];
 	}
 	
-	os <<">";
+	os << "," << total_susceptible << "," << total_infected << "," << total_recovered << ">";
     return os;
 }
 
@@ -121,13 +128,17 @@ void from_json(const json& j, mc &m) {
 struct config {
     std::vector<float> virulence;
     std::vector<float> recovery;
+    std::vector<float> mask_use;
+    float mask_reduction;
     float precision;
-    config(): virulence({0.6}), recovery({0.4}), precision(100) {}
-    config(std::vector<float> &v, std::vector<float> &r, float p): virulence(v), recovery(r), precision(p) {}
+    config(): virulence({0.6}), recovery({0.4}), mask_use({1.0}), mask_reduction(0.5), precision(100) {}
+    config(std::vector<float> &v, std::vector<float> &r, std::vector<float> &mu, float &mr, float p): virulence(v), recovery(r), mask_use(mu), mask_reduction(mr), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
+    j.at("mask_use").get_to(v.mask_use);
+    j.at("mask_reduction").get_to(v.mask_reduction);
     j.at("precision").get_to(v.precision);
 }
 
@@ -143,6 +154,8 @@ public:
     using config_type = config;  // IMPORTANT FOR THE JSON
     std::vector<float> virulence;
     std::vector<float> recovery;
+    std::vector<float> mask_use;
+    float mask_reduction;
     std::vector<float> age_ratio;
     float precision = 100;
 
@@ -153,6 +166,8 @@ public:
             grid_cell<T, sir, mc>(cell_id, neighborhood, initial_state, map_in, delay_id) {
         virulence = config.virulence;
         recovery = config.recovery;
+        mask_use = config.mask_use;
+        mask_reduction = config.mask_reduction;
         precision = config.precision;
         age_ratio = std::vector<float>();
         auto s = state.current_state;
@@ -194,7 +209,7 @@ public:
             mc v = state.neighbors_vicinity.at(neighbor);
             float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
             for(int i = 0; i < n_age_segments(); i++) {
-                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i];
+                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i] * (1 - mask_use[i] + (mask_use[i] * mask_reduction));
             }
         }
         std::vector<float> res = std::vector<float>();
