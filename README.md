@@ -1,1 +1,1 @@
-# Cell-DEVS Hoya model with age-separated population
+# JSON-configurable Cell-DEVS Hoya model with age-separated population
