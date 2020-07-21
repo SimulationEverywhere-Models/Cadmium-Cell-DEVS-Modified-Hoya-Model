@@ -1,14 +1,18 @@
 {
 	"model": "Hoya",
 	"size": [
-		2,
-		2,
+		50,
+		50,
 		1
 	],
 	"ports": [
 		{
 			"name": "population",
 			"style": 0
+		},
+		{
+			"name": "phase",
+			"style": 5
 		},
 		{
 			"name": "susceptible_child",
@@ -90,7 +94,6 @@
 			"name": "total_deceased",
 			"style": 4
 		}
-		
 	],
 	"styles": [
 		[
@@ -362,7 +365,7 @@
 				]
 			},
 			{
-				"start": 0.00000001,
+				"start": 1e-8,
 				"end": 0.02499999,
 				"color": [
 					170,
@@ -445,7 +448,7 @@
 				]
 			},
 			{
-				"start": 0.00000001,
+				"start": 1e-8,
 				"end": 0.19999999,
 				"color": [
 					170,
@@ -511,7 +514,7 @@
 		[
 			{
 				"start": -10000000000000,
-				"end": -0.000000001,
+				"end": -1e-9,
 				"color": [
 					0,
 					0,
