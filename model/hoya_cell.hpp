@@ -82,6 +82,7 @@ std::ostream &operator << (std::ostream &os, const sir &x) {
 	float total_infected = 0.0;
 	float total_recovered = 0.0;
 	float total_deceased = 0.0;
+	
     os << "<" << x.population << "," << x.phase;
 	
 	for(int i = 0; i < x.susceptible.size(); i++) {
@@ -257,6 +258,7 @@ public:
             mc v = state.neighbors_vicinity.at(neighbor);
             float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
 			float mobility_correction;
+			std::vector<float> mask_rates = new_mask_rates(last_state);
 			float mask_impact;
             for(int i = 0; i < n_age_segments(); i++) {
 				mobility_correction = disobedience[i] + (1 - disobedience[i]) * phase_penalties[n.phase][i];
