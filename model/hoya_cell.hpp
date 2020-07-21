@@ -145,10 +145,13 @@ struct config {
 	std::vector<std::vector<float>> phase_penalties;
 	int phase_duration;
 	std::vector<float> disobedience;
+    std::vector<float> mask_use;
+    float mask_reduction;
+	float mask_adoption;
     float precision;
-    config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), infected_capacity(0.1), over_capacity_modifier(1.5), phase_penalties({{0}}), phase_duration(0), disobedience({0.0}), precision(100) {}
+    config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), infected_capacity(0.1), over_capacity_modifier(1.5), phase_penalties({{0}}), phase_duration(0), disobedience({0.0}), mask_use({1.0}), mask_reduction(0.5), mask_adoption(0.5), precision(100) {}
     
-	config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float &c, float &oc, std::vector<std::vector<float>> &pp, int &pd, std::vector<float> &d, float p): susceptibility(s), virulence(v), recovery(r), mortality(m), infected_capacity(c), over_capacity_modifier(oc), phase_duration(pd), disobedience(d), precision(p) {}
+	config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float &c, float &oc, std::vector<std::vector<float>> &pp, int &pd, std::vector<float> &d, std::vector<float> &mu, float &mr, float &ma, float p): susceptibility(s), virulence(v), recovery(r), mortality(m), infected_capacity(c), over_capacity_modifier(oc), phase_duration(pd), disobedience(d), mask_use(mu), mask_reduction(mr), mask_adoption(ma), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("susceptibility").get_to(v.susceptibility);
@@ -160,6 +163,9 @@ void from_json(const json& j, config &v) {
     j.at("phase_penalties").get_to(v.phase_penalties);
     j.at("phase_duration").get_to(v.phase_duration);
     j.at("disobedience").get_to(v.disobedience);
+    j.at("mask_use").get_to(v.mask_use);
+    j.at("mask_reduction").get_to(v.mask_reduction);
+    j.at("mask_adoption").get_to(v.mask_adoption);
     j.at("precision").get_to(v.precision);
 }
 
@@ -182,6 +188,9 @@ public:
 	std::vector<std::vector<float>> phase_penalties;
     int phase_duration;
     std::vector<float> disobedience;
+    std::vector<float> mask_use;
+    float mask_reduction;
+    float mask_adoption;
     std::vector<float> age_ratio;
     float precision = 100;
 
@@ -199,6 +208,9 @@ public:
         phase_penalties = config.phase_penalties;
         phase_duration = config.phase_duration;
         disobedience = config.disobedience;
+        mask_use = config.mask_use;
+        mask_reduction = config.mask_reduction;
+        mask_adoption = config.mask_adoption;
         precision = config.precision;
         age_ratio = std::vector<float>();
         auto s = state.current_state;
@@ -245,9 +257,11 @@ public:
             mc v = state.neighbors_vicinity.at(neighbor);
             float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
 			float mobility_correction;
+			float mask_impact;
             for(int i = 0; i < n_age_segments(); i++) {
 				mobility_correction = disobedience[i] + (1 - disobedience[i]) * phase_penalties[n.phase][i];
-                aux[i] += total_infected * n.population * v.movement[i] * mobility_correction * v.connection[i] * virulence[i];
+				mask_impact = (1.0 - mask_rates[i] + (mask_rates[i] * mask_reduction));
+                aux[i] += total_infected * n.population * v.movement[i] * mobility_correction * v.connection[i] * virulence[i] * mask_impact;
             }
         }
         std::vector<float> res = std::vector<float>();
@@ -289,6 +303,22 @@ public:
         // Then, check that the phase number is within the bounds
         return next % phase_penalties.size();
 	}
+    std::vector<float> new_mask_rates(sir const &last_state) const {
+        std::vector<float> mask_rates = std::vector<float>();
+		float total_infected = 0;
+		
+        for(int i = 0; i < n_age_segments(); i++) {
+            total_infected += last_state.infected[i];
+        }
+		
+		for(int i = 0; i < n_age_segments(); i++) {
+			double age_group_mask_rate = mask_use[i] * mask_adoption * total_infected;
+			mask_rates.push_back(std::min(age_group_mask_rate, 1.0));
+			// ^ no more than 100% of people can wear masks
+		}
+		
+        return mask_rates;
+    }
 };
 
 #endif //CADMIUM_CELLDEVS_PANDEMIC_CELL_HPP
