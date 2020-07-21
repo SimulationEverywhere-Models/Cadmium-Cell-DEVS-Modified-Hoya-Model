@@ -130,15 +130,17 @@ struct config {
     std::vector<float> recovery;
     std::vector<float> mask_use;
     float mask_reduction;
+	float mask_adoption;
     float precision;
-    config(): virulence({0.6}), recovery({0.4}), mask_use({1.0}), mask_reduction(0.5), precision(100) {}
-    config(std::vector<float> &v, std::vector<float> &r, std::vector<float> &mu, float &mr, float p): virulence(v), recovery(r), mask_use(mu), mask_reduction(mr), precision(p) {}
+    config(): virulence({0.6}), recovery({0.4}), mask_use({1.0}), mask_reduction(0.5), mask_adoption(0.5), precision(100) {}
+    config(std::vector<float> &v, std::vector<float> &r, std::vector<float> &mu, float &mr, float &ma, float p): virulence(v), recovery(r), mask_use(mu), mask_reduction(mr), mask_adoption(ma), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
     j.at("mask_use").get_to(v.mask_use);
     j.at("mask_reduction").get_to(v.mask_reduction);
+    j.at("mask_adoption").get_to(v.mask_adoption);
     j.at("precision").get_to(v.precision);
 }
 
@@ -156,6 +158,7 @@ public:
     std::vector<float> recovery;
     std::vector<float> mask_use;
     float mask_reduction;
+    float mask_adoption;
     std::vector<float> age_ratio;
     float precision = 100;
 
@@ -168,6 +171,7 @@ public:
         recovery = config.recovery;
         mask_use = config.mask_use;
         mask_reduction = config.mask_reduction;
+        mask_adoption = config.mask_adoption;
         precision = config.precision;
         age_ratio = std::vector<float>();
         auto s = state.current_state;
@@ -208,8 +212,9 @@ public:
             sir n = state.neighbors_state.at(neighbor);
             mc v = state.neighbors_vicinity.at(neighbor);
             float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
+			std::vector<float> mask_rates = new_mask_rates(last_state);
             for(int i = 0; i < n_age_segments(); i++) {
-                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i] * (1 - mask_use[i] + (mask_use[i] * mask_reduction));
+                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i] * (1.0 - mask_rates[i] + (mask_rates[i] * mask_reduction));
             }
         }
         std::vector<float> res = std::vector<float>();
@@ -227,6 +232,23 @@ public:
             new_r.push_back(last_state.infected[i] * recovery[i]);
         }
         return new_r;
+    }
+
+    std::vector<float> new_mask_rates(sir const &last_state) const {
+        std::vector<float> mask_rates = std::vector<float>();
+		float total_infected = 0;
+		
+        for(int i = 0; i < n_age_segments(); i++) {
+            total_infected += last_state.infected[i];
+        }
+		
+		for(int i = 0; i < n_age_segments(); i++) {
+			double age_group_mask_rate = mask_use[i] * mask_adoption * total_infected;
+			mask_rates.push_back(std::min(age_group_mask_rate, 1.0));
+			// ^ no more than 100% of people can wear masks
+		}
+		
+        return mask_rates;
     }
 };
 

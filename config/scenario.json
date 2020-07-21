@@ -14,8 +14,9 @@
       "hoya_age": {
         "virulence": [ 0.6, 0.6, 0.6, 0.6 ],
         "recovery": [ 0.3, 0.3, 0.3, 0.3 ],
-		"mask_use": [ 0, 0.25, 0.8, 0.6 ],
-		"mask_reduction": 0.5,
+		"mask_use": [ 1, 1, 1, 1 ],
+		"mask_reduction": 0.3,
+		"mask_adoption": 10.0,
         "precision": 1000
       }
     },
