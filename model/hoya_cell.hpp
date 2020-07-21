@@ -88,21 +88,18 @@ std::ostream &operator << (std::ostream &os, const sir &x) {
 	for(int i = 0; i < x.susceptible.size(); i++) {
 		total_susceptible += x.susceptible[i];
 		os << "," << x.susceptible[i];
-		total_susceptible += x.susceptible[i];
 	}
 	for(int i = 0; i < x.infected.size(); i++) {
 		total_infected += x.infected[i];
 		os << "," << x.infected[i];
-		total_infected += x.infected[i];
 	}
 	for(int i = 0; i < x.recovered.size(); i++) {
 		total_recovered += x.recovered[i];
 		os << "," << x.recovered[i];
-		total_recovered += x.recovered[i];
 	}
 	for(int i = 0; i < x.deceased.size(); i++) {
-		os << "," << x.deceased[i];
 		total_deceased += x.deceased[i];
+		os << "," << x.deceased[i];
 	}
 	
 	os << "," << total_susceptible << "," << total_infected << "," << total_recovered << "," << total_deceased << ">";
