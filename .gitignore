@@ -55,3 +55,6 @@ logs/
 
 # MacOS
 .DS_Store
+
+# Misc
+*.stackdump
