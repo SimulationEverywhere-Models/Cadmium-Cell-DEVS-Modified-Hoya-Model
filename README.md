@@ -2,14 +2,18 @@
 
 Virulence applies to the people spreading the disease (*virulence*).
 Susceptibility applies to the people contracting the disease (*susceptibility*).
+Both are multiplied together for each pair considered in the calculations.
 
 
 Mortality rate affects how likely people are to die before recovering (*mortality*).
 When more people are infected in a cell than the infected capacity, the mortality changes (*infected_capacity*).
  - This represents running out of space in hospitals
 
+The over capacity modifier changes the amount that the mortality is affected after the infected cap is reached (*over_capacity_modifier*).
+
 
 Each phase of the quarantine is reacted to differently by different age groups (*phase_penalties*).
+Each different phase has a list of each group's reaction to that particular phase.
 Each age group has a different rate of disobedience toward the quarantine (*disobedience*).
 The quarantine is applied as a "mobility correction" on infection contribution from neighboring cells.
 
