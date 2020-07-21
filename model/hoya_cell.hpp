@@ -283,15 +283,24 @@ public:
     std::vector<float> new_deaths(sir const &last_state) const {
         std::vector<float> new_d = std::vector<float>();
 		float total_infected = 0;
+		
         for(int i = 0; i < n_age_segments(); i++) {
 			total_infected += last_state.infected[i];
             new_d.push_back(last_state.infected[i] * mortality[i]);
         }
+		
 		if(total_infected > infected_capacity) {
 			for(int i = 0; i < n_age_segments(); i++) {
 				new_d[i] *= over_capacity_modifier;
 			}
 		}
+		
+        for(int i = 0; i < n_age_segments(); i++) {
+			if(new_d[i] > last_state.infected[i]) {
+				new_d[i] = last_state.infected[i];
+			}
+        }
+		
         return new_d;
     }
 	
@@ -302,6 +311,7 @@ public:
         // Then, check that the phase number is within the bounds
         return next % phase_penalties.size();
 	}
+	
     std::vector<float> new_mask_rates(sir const &last_state) const {
         std::vector<float> mask_rates = std::vector<float>();
 		float total_infected = 0;
