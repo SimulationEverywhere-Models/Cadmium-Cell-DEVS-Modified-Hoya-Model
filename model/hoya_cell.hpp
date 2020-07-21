@@ -43,8 +43,9 @@ struct sir {
     std::vector<float> susceptible;
     std::vector<float> infected;
     std::vector<float> recovered;
-    sir() : population(0), susceptible({1}), infected({0}), recovered({0}) {}  // a default constructor is required
-    sir(unsigned int pop, std::vector<float> &s, std::vector<float> &i, std::vector<float> &r) : population(pop), susceptible(s), infected(i), recovered(r) {}
+    std::vector<float> deceased;
+    sir() : population(0), susceptible({1}), infected({0}), recovered({0}), deceased({0}) {}  // a default constructor is required
+    sir(unsigned int pop, std::vector<float> &s, std::vector<float> &i, std::vector<float> &r, std::vector<float> &d) : population(pop), susceptible(s), infected(i), recovered(r), deceased(d) {}
 
     template <typename T>
     static T sum_vector(std::vector<T> const &v) {
@@ -69,7 +70,7 @@ struct sir {
 // Required for comparing states and detect any change
 inline bool operator != (const sir &x, const sir &y) {
     return x.population != y.population || x.susceptible != y.susceptible || x.infected != y.infected ||
-           x.recovered != y.recovered;
+           x.recovered != y.recovered || x.deceased != y.deceased;
 }
 // Required if you want to use transport delay (priority queue has to sort messages somehow)
 inline bool operator < (const sir& lhs, const sir& rhs){ return true; }
@@ -79,6 +80,7 @@ std::ostream &operator << (std::ostream &os, const sir &x) {
 	float total_susceptible = 0.0;
 	float total_infected = 0.0;
 	float total_recovered = 0.0;
+	float total_deceased = 0.0;
 	
     os << "<" << x.population;
 	
@@ -94,8 +96,12 @@ std::ostream &operator << (std::ostream &os, const sir &x) {
 		os << "," << x.recovered[i];
 		total_recovered += x.recovered[i];
 	}
+	for(int i = 0; i < x.deceased.size(); i++) {
+		os << "," << x.deceased[i];
+		total_deceased += x.deceased[i];
+	}
 	
-	os << "," << total_susceptible << "," << total_infected << "," << total_recovered << ">";
+	os << "," << total_susceptible << "," << total_infected << "," << total_recovered << "," << total_deceased << ">";
     return os;
 }
 
@@ -105,6 +111,7 @@ void from_json(const json& j, sir &s) {
     j.at("susceptible").get_to(s.susceptible);
     j.at("infected").get_to(s.infected);
     j.at("recovered").get_to(s.recovered);
+    j.at("deceased").get_to(s.deceased);
 }
 
 /************************************/
@@ -129,14 +136,16 @@ struct config {
     std::vector<float> susceptibility;
     std::vector<float> virulence;
     std::vector<float> recovery;
+    std::vector<float> mortality;
     float precision;
-    config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), precision(100) {}
-    config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, float p): susceptibility(s), virulence(v), recovery(r), precision(p) {}
+    config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), precision(100) {}
+    config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float p): susceptibility(s), virulence(v), recovery(r), mortality(m), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("susceptibility").get_to(v.susceptibility);
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
+    j.at("mortality").get_to(v.mortality);
     j.at("precision").get_to(v.precision);
 }
 
@@ -153,6 +162,7 @@ public:
     std::vector<float> susceptibility;
     std::vector<float> virulence;
     std::vector<float> recovery;
+    std::vector<float> mortality;
     std::vector<float> age_ratio;
     float precision = 100;
 
@@ -164,11 +174,12 @@ public:
         susceptibility = config.susceptibility;
         virulence = config.virulence;
         recovery = config.recovery;
+        mortality = config.mortality;
         precision = config.precision;
         age_ratio = std::vector<float>();
         auto s = state.current_state;
         for (int i = 0; i < n_age_segments(); i++) {
-            float ratio = std::round(precision * (s.susceptible[i] + s.infected[i] + s.recovered[i])) / precision;
+            float ratio = std::round(precision * (s.susceptible[i] + s.infected[i] + s.recovered[i] + s.deceased[i])) / precision;
             age_ratio.push_back(ratio);
         }
     }
@@ -182,11 +193,13 @@ public:
         auto res = state.current_state;
         auto new_i = new_infections(res);
         auto new_r = new_recoveries(res);
+        auto new_d = new_deaths(res);
 
         for (int i = 0; i < n_age_segments(); i++) {
             res.recovered[i] = std::round((res.recovered[i] + new_r[i]) * precision) / precision;
-            res.infected[i] = std::round((res.infected[i] + new_i[i] - new_r[i]) * precision) / precision;
-            res.susceptible[i] = age_ratio[i] - res.recovered[i] - res.infected[i];
+            res.deceased[i] = std::round((res.deceased[i] + new_d[i]) * precision) / precision;
+            res.infected[i] = std::round((res.infected[i] + new_i[i] - (new_r[i] + new_d[i])) * precision) / precision;
+            res.susceptible[i] = age_ratio[i] - (res.recovered[i] + res.infected[i] + res.deceased[i]);
         }
         return res;
     }
@@ -223,6 +236,14 @@ public:
             new_r.push_back(last_state.infected[i] * recovery[i]);
         }
         return new_r;
+    }
+
+    std::vector<float> new_deaths(sir const &last_state) const {
+        std::vector<float> new_d = std::vector<float>();
+        for(int i = 0; i < n_age_segments(); i++) {
+            new_d.push_back(last_state.infected[i] * mortality[i]);
+        }
+        return new_d;
     }
 };
 
