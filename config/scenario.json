@@ -1,42 +1,58 @@
 {
-  "scenario": {
-    "shape": [50, 50],
-    "wrapped": true,
-    "default_delay": "inertial",
-    "default_cell_type": "hoya_age",
-    "default_state": {
-      "population": 100,
-      "susceptible": [0.25, 0.25, 0.25, 0.25],
-      "infected": [0, 0, 0, 0],
-      "recovered": [0, 0, 0, 0]
-    },
-    "default_config": {
-      "hoya_age": {
-        "virulence": [ 0.6, 0.6, 0.6, 0.6],
-        "recovery": [ 0.4, 0.4, 0.4, 0.4],
-        "precision": 1000
-      }
-    },
-    "neighborhood": [
-      {
-        "type": "von_neumann",
-        "range": 1,
-        "vicinity": {
-          "connection": [ 1, 1, 1, 1],
-          "movement": [0.5, 0.5, 0.5, 0.5]
-        }
-      }
-    ]
-  },
-  "cells": [
-    {
-      "cell_id": [24, 24],
-      "state": {
-        "population": 100,
-        "susceptible": [0.2, 0.2, 0.2, 0.2],
-        "infected": [0.05, 0.05, 0.05, 0.05],
-        "recovered": [0, 0, 0, 0]
-      }
-    }
-  ]
+	"scenario": {
+		"shape": [ 50, 50 ],
+		"wrapped": false,
+		"default_delay": "inertial",
+		"default_cell_type": "hoya_age",
+		"default_state": {
+			"population": 100,
+			"susceptible": [ 0.25, 0.25, 0.25, 0.25 ],
+			"infected": [ 0, 0, 0, 0 ],
+			"recovered": [ 0, 0, 0, 0 ],
+			"deceased": [ 0, 0, 0, 0 ]
+		},
+		"default_config": {
+			"hoya_age": {
+				"susceptibility": [ 0.55, 0.9, 0.85, 0.9 ],
+				"virulence": [ 0.7, 0.8, 0.9, 0.8 ],
+				"recovery": [ 0.6, 0.6, 0.6, 0.6 ],
+				"mortality": [ 0.00005, 0.00037, 0.03135, 0.08823 ],
+				"infected_capacity": 0.25,
+				"over_capacity_modifier": 6.67,
+				"phase_penalties": [ 
+					[ 1, 1, 1, 1 ],
+					[ 0.3, 0.5, 0.5, 0.4 ],
+					[ 0.0, 0.2, 0.2, 0.1 ]
+				],
+				"phase_duration": 4,
+				"disobedience": [ 0.0, 0.0, 0.0, 0.0 ],
+				"mask_use": [ 1, 1, 1, 1 ],
+				"mask_reduction": 0.3,
+				"mask_adoption": 10.0,
+				"precision": 1000
+			}
+		},
+		"neighborhood": [
+			{
+				"type": "von_neumann",
+				"range": 1,
+				"vicinity": {
+					"connection": [ 1, 1, 1, 1 ],
+					"movement": [ 0.5, 0.5, 0.5, 0.5 ]
+				}
+			}
+		]
+	},
+	"cells": [
+		{
+			"cell_id": [ 0, 0 ],
+			"state": {
+				"population": 100,
+				"susceptible": [ 0.2475, 0.2475, 0.2475, 0.2475 ],
+				"infected": [ 0.0025, 0.0025, 0.0025, 0.0025 ],
+				"recovered": [ 0, 0, 0, 0 ],
+				"deceased": [ 0, 0, 0, 0 ]
+			}
+		}
+	]
 }
