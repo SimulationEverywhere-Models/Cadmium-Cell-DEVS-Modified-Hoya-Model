@@ -129,17 +129,17 @@ struct config {
     std::vector<float> virulence;
     std::vector<float> recovery;
 	std::vector<std::vector<float>> phase_penalties;
-	int phase_duration;
+	std::vector<int> phase_durations;
 	std::vector<float> disobedience;
     float precision;
-    config(): virulence({0.6}), recovery({0.4}), phase_penalties({{0}}), phase_duration(0), disobedience({0.0}), precision(100) {}
-    config(std::vector<float> &v, std::vector<float> &r, std::vector<std::vector<float>> &pp, int &pd, std::vector<float> &d, float p): virulence(v), recovery(r), phase_duration(pd), disobedience(d), precision(p) {}
+    config(): virulence({0.6}), recovery({0.4}), phase_penalties({{0}}), phase_durations({0}), disobedience({0.0}), precision(100) {}
+    config(std::vector<float> &v, std::vector<float> &r, std::vector<std::vector<float>> &pp, std::vector<int> &pd, std::vector<float> &d, float p): virulence(v), recovery(r), phase_durations(pd), disobedience(d), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
     j.at("phase_penalties").get_to(v.phase_penalties);
-    j.at("phase_duration").get_to(v.phase_duration);
+    j.at("phase_durations").get_to(v.phase_durations);
     j.at("disobedience").get_to(v.disobedience);
     j.at("precision").get_to(v.precision);
 }
@@ -157,7 +157,7 @@ public:
     std::vector<float> virulence;
     std::vector<float> recovery;
 	std::vector<std::vector<float>> phase_penalties;
-    int phase_duration;
+    std::vector<int> phase_durations;
     std::vector<float> disobedience;
     std::vector<float> age_ratio;
     float precision = 100;
@@ -170,7 +170,7 @@ public:
         virulence = config.virulence;
         recovery = config.recovery;
         phase_penalties = config.phase_penalties;
-        phase_duration = config.phase_duration;
+        phase_durations = config.phase_durations;
         disobedience = config.disobedience;
         precision = config.precision;
         age_ratio = std::vector<float>();
@@ -239,11 +239,19 @@ public:
     }
 	
 	unsigned int next_phase(unsigned int phase) const {
-        // First, check if phase should be incremented
-		// (The phase is only incremented periodically)
-        int next = (fmod(simulation_clock, phase_duration) == phase_duration - 1)? phase + 1 : phase;
-        // Then, check that the phase number is within the bounds
-        return next % phase_penalties.size();
+		int days_sum = 0;
+		for(int phase_duration: phase_durations) {
+			days_sum += phase_duration;
+		}
+		
+		int aux = (int)(simulation_clock) % (days_sum);
+		int i = 0;
+		
+		for(i = 0; aux >= phase_durations[i]; i++) {
+			aux -= phase_durations[i];
+		}
+		
+		return i;
 	}
 };
 
