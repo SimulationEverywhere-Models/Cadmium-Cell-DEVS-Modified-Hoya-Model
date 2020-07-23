@@ -14,6 +14,7 @@ The over capacity modifier changes the amount that the mortality is affected aft
 
 Each phase of the quarantine is reacted to differently by different age groups (*phase_penalties*).
 Each different phase has a list of each group's reaction to that particular phase.
+Each phase of the quarantine has a different duration (*phase_durations*)
 Each age group has a different rate of disobedience toward the quarantine (*disobedience*).
 The quarantine is applied as a "mobility correction" on infection contribution from neighboring cells.
 

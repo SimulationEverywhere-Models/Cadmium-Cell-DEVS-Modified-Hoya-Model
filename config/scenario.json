@@ -1,6 +1,6 @@
 {
 	"scenario": {
-		"shape": [ 50, 50 ],
+		"shape": [ 25, 25 ],
 		"wrapped": false,
 		"default_delay": "inertial",
 		"default_cell_type": "hoya_age",
@@ -20,13 +20,14 @@
 				"infected_capacity": 1.00,
 				"over_capacity_modifier": 1.0,
 				"phase_penalties": [ 
-					[ 1.0, 1.0, 1.0, 1.0 ]
+					[ 0.65, 0.75, 0.75, 0.7 ],
+					[ 0.1, 0.3, 0.3, 0.2 ]
 				],
-				"phase_duration": 1,
+				"phase_durations": [ 10, 4 ],
 				"disobedience": [ 0.0, 0.0, 0.0, 0.0 ],
 				"mask_use": [ 1.0, 1.0, 1.0, 1.0 ],
-				"mask_reduction": 0.4,
-				"mask_adoption": 1000000000.0, 
+				"mask_reduction": 1.0,
+				"mask_adoption": 0.0, 
 				"precision": 1000
 			}
 		},
@@ -43,7 +44,7 @@
 	},
 	"cells": [
 		{
-			"cell_id": [ 24, 24 ],
+			"cell_id": [ 12, 12 ],
 			"state": {
 				"population": 100,
 				"susceptible": [ 0.1782, 0.0693, 0.5742, 0.1683 ],
