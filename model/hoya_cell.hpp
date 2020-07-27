@@ -76,19 +76,26 @@ inline bool operator < (const sir& lhs, const sir& rhs){ return true; }
 
 // Required for printing the state of the cell
 std::ostream &operator << (std::ostream &os, const sir &x) {
+	float total_susceptible = 0.0;
+	float total_infected = 0.0;
+	float total_recovered = 0.0;
+	
     os << "<" << x.population;
 	
 	for(int i = 0; i < x.susceptible.size(); i++) {
+		total_susceptible += x.susceptible[i];
 		os << "," << x.susceptible[i];
 	}
 	for(int i = 0; i < x.infected.size(); i++) {
+		total_infected += x.infected[i];
 		os << "," << x.infected[i];
 	}
 	for(int i = 0; i < x.recovered.size(); i++) {
+		total_recovered += x.recovered[i];
 		os << "," << x.recovered[i];
 	}
 	
-	os <<">";
+	os << "," << total_susceptible << "," << total_infected << "," << total_recovered << ">";
     return os;
 }
 
@@ -121,13 +128,17 @@ void from_json(const json& j, mc &m) {
 struct config {
     std::vector<float> virulence;
     std::vector<float> recovery;
+    std::vector<float> lockdown_rates;
+    float lockdown_adoption;
     float precision;
-    config(): virulence({0.6}), recovery({0.4}), precision(100) {}
-    config(std::vector<float> &v, std::vector<float> &r, float p): virulence(v), recovery(r), precision(p) {}
+    config(): virulence({0.6}), recovery({0.4}), lockdown_rates({0.0}), lockdown_adoption(0.0), precision(100) {}
+    config(std::vector<float> &v, std::vector<float> &r, std::vector<float> &lr, float &la, float p): virulence(v), recovery(r), lockdown_rates(lr), lockdown_adoption(la), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
+    j.at("lockdown_rates").get_to(v.lockdown_rates);
+    j.at("lockdown_adoption").get_to(v.lockdown_adoption);
     j.at("precision").get_to(v.precision);
 }
 
@@ -143,6 +154,8 @@ public:
     using config_type = config;  // IMPORTANT FOR THE JSON
     std::vector<float> virulence;
     std::vector<float> recovery;
+    std::vector<float> lockdown_rates;
+    float lockdown_adoption;
     std::vector<float> age_ratio;
     float precision = 100;
 
@@ -153,6 +166,8 @@ public:
             grid_cell<T, sir, mc>(cell_id, neighborhood, initial_state, map_in, delay_id) {
         virulence = config.virulence;
         recovery = config.recovery;
+        lockdown_rates = config.lockdown_rates;
+        lockdown_adoption = config.lockdown_adoption;
         precision = config.precision;
         age_ratio = std::vector<float>();
         auto s = state.current_state;
@@ -186,6 +201,7 @@ public:
 
     std::vector<float> new_infections(sir const &last_state) const {
         std::vector<float> aux = std::vector<float>();
+		std::vector<float> lockdown_factors = new_lockdown_factors(last_state);
         for (int i = 0; i < n_age_segments(); i++) {
             aux.push_back(0);
         }
@@ -194,7 +210,7 @@ public:
             mc v = state.neighbors_vicinity.at(neighbor);
             float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
             for(int i = 0; i < n_age_segments(); i++) {
-                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i];
+                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i] * lockdown_factors[i];
             }
         }
         std::vector<float> res = std::vector<float>();
@@ -213,6 +229,23 @@ public:
         }
         return new_r;
     }
+	
+	std::vector<float> new_lockdown_factors(sir const &last_state) const {
+		std::vector<float> lockdown_factors = std::vector<float>();
+		float total_infected = 0;
+		double age_group_lockdown_factor = 0;
+		
+		for(int i = 0; i < n_age_segments(); i++) {
+			total_infected += last_state.infected[i];
+		}
+		
+		for(int i = 0; i < n_age_segments(); i++) {
+			age_group_lockdown_factor = 1 - (lockdown_rates[i] * lockdown_adoption * total_infected);
+			lockdown_factors.push_back(std::max(age_group_lockdown_factor, 0.0));
+		}
+		
+		return lockdown_factors;
+	}
 };
 
 #endif //CADMIUM_CELLDEVS_PANDEMIC_CELL_HPP
