@@ -202,6 +202,7 @@ public:
     std::vector<float> new_infections(sir const &last_state) const {
         std::vector<float> aux = std::vector<float>();
 		std::vector<float> lockdown_factors = new_lockdown_factors(last_state);
+		float mobility_correction;
         for (int i = 0; i < n_age_segments(); i++) {
             aux.push_back(0);
         }
@@ -210,7 +211,8 @@ public:
             mc v = state.neighbors_vicinity.at(neighbor);
             float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
             for(int i = 0; i < n_age_segments(); i++) {
-                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i] * lockdown_factors[i];
+				mobility_correction = lockdown_factors[i];
+                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i] * mobility_correction;
             }
         }
         std::vector<float> res = std::vector<float>();
@@ -240,7 +242,8 @@ public:
 		}
 		
 		for(int i = 0; i < n_age_segments(); i++) {
-			age_group_lockdown_factor = 1 - (lockdown_rates[i] * lockdown_adoption * total_infected);
+			age_group_lockdown_factor = (1 - lockdown_adoption * total_infected) + (lockdown_rates[i] * lockdown_adoption * total_infected);
+			
 			lockdown_factors.push_back(std::max(age_group_lockdown_factor, 0.0));
 		}
 		
