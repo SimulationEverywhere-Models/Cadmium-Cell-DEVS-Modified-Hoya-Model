@@ -129,17 +129,19 @@ struct config {
     std::vector<float> virulence;
     std::vector<float> recovery;
     std::vector<float> mask_use;
-    float mask_reduction;
+    float mask_susceptibility_reduction;
+    float mask_virulence_reduction;
 	float mask_adoption;
     float precision;
-    config(): virulence({0.6}), recovery({0.4}), mask_use({1.0}), mask_reduction(0.5), mask_adoption(0.5), precision(100) {}
-    config(std::vector<float> &v, std::vector<float> &r, std::vector<float> &mu, float &mr, float &ma, float p): virulence(v), recovery(r), mask_use(mu), mask_reduction(mr), mask_adoption(ma), precision(p) {}
+    config(): virulence({0.6}), recovery({0.4}), mask_use({1.0}), mask_susceptibility_reduction(0.5), mask_virulence_reduction(0.5), mask_adoption(0.5), precision(100) {}
+    config(std::vector<float> &v, std::vector<float> &r, std::vector<float> &mu, float &msr, float &mvr, float &ma, float p): virulence(v), recovery(r), mask_use(mu), mask_susceptibility_reduction(msr), mask_virulence_reduction(mvr), mask_adoption(ma), precision(p) {}
 };
 void from_json(const json& j, config &v) {
     j.at("virulence").get_to(v.virulence);
     j.at("recovery").get_to(v.recovery);
     j.at("mask_use").get_to(v.mask_use);
-    j.at("mask_reduction").get_to(v.mask_reduction);
+    j.at("mask_susceptibility_reduction").get_to(v.mask_susceptibility_reduction);
+    j.at("mask_virulence_reduction").get_to(v.mask_virulence_reduction);
     j.at("mask_adoption").get_to(v.mask_adoption);
     j.at("precision").get_to(v.precision);
 }
@@ -157,7 +159,8 @@ public:
     std::vector<float> virulence;
     std::vector<float> recovery;
     std::vector<float> mask_use;
-    float mask_reduction;
+    float mask_susceptibility_reduction;
+    float mask_virulence_reduction;
     float mask_adoption;
     std::vector<float> age_ratio;
     float precision = 100;
@@ -170,7 +173,8 @@ public:
         virulence = config.virulence;
         recovery = config.recovery;
         mask_use = config.mask_use;
-        mask_reduction = config.mask_reduction;
+        mask_susceptibility_reduction = config.mask_susceptibility_reduction;
+        mask_virulence_reduction = config.mask_virulence_reduction;
         mask_adoption = config.mask_adoption;
         precision = config.precision;
         age_ratio = std::vector<float>();
@@ -212,9 +216,10 @@ public:
             sir n = state.neighbors_state.at(neighbor);
             mc v = state.neighbors_vicinity.at(neighbor);
             float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
-			std::vector<float> mask_rates = new_mask_rates(last_state);
+			std::vector<float> local_mask_rates = new_mask_rates(last_state);
+			std::vector<float> neighbor_mask_rates = new_mask_rates(n);
             for(int i = 0; i < n_age_segments(); i++) {
-                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i] * (1.0 - mask_rates[i] + (mask_rates[i] * mask_reduction));
+                aux[i] += total_infected * n.population * v.movement[i] * v.connection[i] * virulence[i] * (1.0 - local_mask_rates[i] + (local_mask_rates[i] * mask_susceptibility_reduction)) * (1.0 - neighbor_mask_rates[i] + (neighbor_mask_rates[i] * mask_virulence_reduction));
             }
         }
         std::vector<float> res = std::vector<float>();
