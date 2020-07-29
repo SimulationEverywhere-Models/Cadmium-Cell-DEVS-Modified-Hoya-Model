@@ -1,28 +1,46 @@
 # JSON-configurable Cell-DEVS Hoya model with age-separated population, separation between virulence and susceptibility, deaths, infected capacity,  quarantines, and masks
 
-Virulence applies to the people spreading the disease (*virulence*).
-Susceptibility applies to the people contracting the disease (*susceptibility*).
-Both are multiplied together for each pair considered in the calculations.
+## Populations
+	- *population* (integer)
+		- The total number of people in the cell.
+	- *susceptible* (array of decimals)
+		- The portion of the population which can catch the disease. Each number in the array corresponds to a different age group.
+	- *infected* (array of decimals)
+		- The portion of the population which currently have the disease. Each number in the array corresponds to a different age group.
+	- *recovered* (array of decimals)
+		- The portion of the population which no longer have the disease. Each number in the array corresponds to a different age group.
+	- *deceased* (array of decimals)
+		- The portion of the population which have died. Each number in the array corresponds to a different age group.
 
+## "Transition Factors"
+	- *susceptibility* (array of decimals)
+		- How easily a susceptible person in each age group can be infected by the disease.
+	- *virulence* (array of decimals)
+		- How effective an infected person in each age group is at spreading the disease.
+	- *recovery* (array of decimals)
+		- How quickly an infected person in each age group recovers from the disease.
+	- *mortality* (array of decimals)
+		- How likely an infected person in each age group is to die from the disease.
 
-Mortality rate affects how likely people are to die before recovering (*mortality*).
-When more people are infected in a cell than the infected capacity, the mortality changes (*infected_capacity*).
- - This represents running out of space in hospitals
+## Hospital Capacity
+	- *infected_capacity* (decimal)
+		- The portion of the population can be handled as infected before the hospitals run out of space.
+	- *over_capacity_modifier* (decimal)
+		- The mortality increase that is applied when the hospitals don't have enough space to handle the infected population.
 
-The over capacity modifier changes the amount that the mortality is affected after the infected cap is reached (*over_capacity_modifier*).
+## Quarantines
+	- *phase_penalties* (array of arrays of decimals)
+		- Each array represents a phase, and the decimal values within those arrays represent the impact of that particular phase of the quarantine on the corresponding age group.
+	- *phase_durations* (array of integers)
+		- How long each corresponding phase lasts.
+	- *disobedience* (array of decimals)
+		- The amount of people in each age group that disobey the quarantine rules.
 
+## Masks
+	- *mask_use* (array of decimals)
+		- The amount of people in each age group that use masks.
+	- *mask_reduction* (decimal)
+		- The amount that the infection rate is reduced to (Eg. a value of 0.3 means that the mask blocks 70% of the spread).
+	- *mask_adoption* (decimal)
+		- How much the infected population impacts the number of people who wear masks.
 
-Each phase of the quarantine is reacted to differently by different age groups (*phase_penalties*).
-Each different phase has a list of each group's reaction to that particular phase.
-Each phase of the quarantine has a different duration (*phase_durations*)
-Each age group has a different rate of disobedience toward the quarantine (*disobedience*).
-The quarantine is applied as a "mobility correction" on infection contribution from neighboring cells.
-
-
-Masks reduce the infection rate of the disease by a configurable amount (*mask_reduction*).
- - This value is the amount that the rate is reduced to
- - Eg. a value of 0.3 means that the mask blocks 70% of the spread
-
-Different sub-populations (age groups) may be more or less likely to wear masks (*mask_use*).
-The amount that the infection rate is slowed depends on the number of people currently infected.
- - The amount that the infected amount affects this is configurable (*mask_adoption*)
