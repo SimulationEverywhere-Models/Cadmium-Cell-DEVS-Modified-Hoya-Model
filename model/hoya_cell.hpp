@@ -141,16 +141,18 @@ struct config {
 	float infected_capacity;
 	float over_capacity_modifier;
 	std::vector<std::vector<float>> phase_penalties;
-	int phase_duration;
+	std::vector<int> phase_durations;
 	std::vector<float> disobedience;
 	std::vector<float> mask_use;
 	float mask_reduction;
 	float mask_adoption;
 	float precision;
-	config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), infected_capacity(0.1), over_capacity_modifier(1.5), phase_penalties({{0}}), phase_duration(0), disobedience({0.0}), mask_use({1.0}), mask_reduction(0.5), mask_adoption(0.5), precision(100) {}
 	
-	config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float &c, float &oc, std::vector<std::vector<float>> &pp, int &pd, std::vector<float> &d, std::vector<float> &mu, float &mr, float &ma, float p): susceptibility(s), virulence(v), recovery(r), mortality(m), infected_capacity(c), over_capacity_modifier(oc), phase_duration(pd), disobedience(d), mask_use(mu), mask_reduction(mr), mask_adoption(ma), precision(p) {}
+	config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), infected_capacity(0.1), over_capacity_modifier(1.5), phase_penalties({{0}}), phase_durations({1}), disobedience({0.0}), mask_use({1.0}), mask_reduction(0.5), mask_adoption(0.5), precision(100) {}
+	
+	config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float &c, float &oc, std::vector<std::vector<float>> &pp, std::vector<int> &pd, std::vector<float> &d, std::vector<float> &mu, float &mr, float &ma, float p): susceptibility(s), virulence(v), recovery(r), mortality(m), infected_capacity(c), over_capacity_modifier(oc), phase_durations(pd), disobedience(d), mask_use(mu), mask_reduction(mr), mask_adoption(ma), precision(p) {}
 };
+
 void from_json(const json& j, config &v) {
 	j.at("susceptibility").get_to(v.susceptibility);
 	j.at("virulence").get_to(v.virulence);
@@ -159,7 +161,7 @@ void from_json(const json& j, config &v) {
 	j.at("infected_capacity").get_to(v.infected_capacity);
 	j.at("over_capacity_modifier").get_to(v.over_capacity_modifier);
 	j.at("phase_penalties").get_to(v.phase_penalties);
-	j.at("phase_duration").get_to(v.phase_duration);
+    j.at("phase_durations").get_to(v.phase_durations);
 	j.at("disobedience").get_to(v.disobedience);
 	j.at("mask_use").get_to(v.mask_use);
 	j.at("mask_reduction").get_to(v.mask_reduction);
@@ -184,16 +186,16 @@ public:
 	float infected_capacity;
 	float over_capacity_modifier;
 	std::vector<std::vector<float>> phase_penalties;
-	int phase_duration;
+    std::vector<int> phase_durations;
 	std::vector<float> disobedience;
 	std::vector<float> mask_use;
 	float mask_reduction;
 	float mask_adoption;
 	std::vector<float> age_ratio;
 	float precision = 100;
-
+	
 	hoya_cell() : grid_cell<T, sir, mc>() {}
-
+	
 	hoya_cell(cell_position const &cell_id, cell_unordered<mc> const &neighborhood, sir &initial_state,
 			  cell_map<sir, mc> const &map_in, std::string const &delay_id, config &config) :
 			grid_cell<T, sir, mc>(cell_id, neighborhood, initial_state, map_in, delay_id) {
@@ -204,7 +206,7 @@ public:
 		infected_capacity = config.infected_capacity;
 		over_capacity_modifier = config.over_capacity_modifier;
 		phase_penalties = config.phase_penalties;
-		phase_duration = config.phase_duration;
+        phase_durations = config.phase_durations;
 		disobedience = config.disobedience;
 		mask_use = config.mask_use;
 		mask_reduction = config.mask_reduction;
@@ -234,8 +236,7 @@ public:
 			res.deceased[i] = std::round((res.deceased[i] + new_d[i]) * precision) / precision;
 			res.infected[i] = std::round((res.infected[i] + new_i[i] - (new_r[i] + new_d[i])) * precision) / precision;
 			res.susceptible[i] = age_ratio[i] - (res.recovered[i] + res.infected[i] + res.deceased[i]);
-		}
-		
+		}		
 		res.phase = next_phase(res.phase);
 		
 		return res;
@@ -305,11 +306,19 @@ public:
 	}
 	
 	unsigned int next_phase(unsigned int phase) const {
-		// First, check if phase should be incremented
-		// (The phase is only incremented periodically)
-		int next = (fmod(simulation_clock, phase_duration) == phase_duration - 1)? phase + 1 : phase;
-		// Then, check that the phase number is within the bounds
-		return next % phase_penalties.size();
+		int days_sum = 0;
+		for(int phase_duration: phase_durations) {
+			days_sum += phase_duration;
+		}
+		
+		int aux = (int)(simulation_clock) % (days_sum);
+		int i = 0;
+		
+		for(i = 0; aux >= phase_durations[i]; i++) {
+			aux -= phase_durations[i];
+		}
+		
+		return i;
 	}
 	
 	std::vector<float> new_mask_rates(sir const &last_state) const {
