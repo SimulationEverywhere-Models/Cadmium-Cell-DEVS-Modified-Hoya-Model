@@ -248,6 +248,9 @@ public:
 
 	std::vector<float> new_infections(sir const &last_state) const {
 		std::vector<float> aux = std::vector<float>();
+		std::vector<float> res = std::vector<float>();
+		float mask_impact;
+		std::vector<float> mask_rates = new_mask_rates(last_state);
 		for (int i = 0; i < n_age_segments(); i++) {
 			aux.push_back(0);
 		}
@@ -256,15 +259,18 @@ public:
 			mc v = state.neighbors_vicinity.at(neighbor);
 			float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
 			float mobility_correction;
-			std::vector<float> mask_rates = new_mask_rates(last_state);
-			float mask_impact;
 			for(int i = 0; i < n_age_segments(); i++) {
 				mobility_correction = disobedience[i] + (1 - disobedience[i]) * phase_penalties[n.phase][i];
 				mask_impact = (1.0 - mask_rates[i] + (mask_rates[i] * mask_reduction));
 				aux[i] += total_infected * n.population * v.movement[i] * mobility_correction * v.connection[i] * virulence[i] * mask_impact;
 			}
 		}
-		std::vector<float> res = std::vector<float>();
+		
+		for(int i = 0; i < n_age_segments(); i++) {
+			mask_impact = (1.0 - mask_rates[i] + (mask_rates[i] * mask_reduction));
+			aux[i] += last_state.infected_ratio() * last_state.population * virulence[i] * mask_impact;
+		}
+		
 		for (int i = 0; i < n_age_segments(); i++) {
 			if (aux[i] > 0)
 				aux[i] += 0;
