@@ -39,8 +39,10 @@
 ## Masks
 	- *mask_use* (array of decimals)
 		- The amount of people in each age group that use masks.
-	- *mask_reduction* (decimal)
-		- The amount that the infection rate is reduced to (Eg. a value of 0.3 means that the mask blocks 70% of the spread).
+	- *mask_virulence_reduction* (decimal)
+		- The amount that the virulence rate is reduced to (Eg. a value of 0.3 means that the mask blocks 70% of the outgoing spread).
+	- *mask_susceptibility_reduction* (decimal)
+		- The amount that the susceptibility rate is reduced to (Eg. a value of 0.3 means that the mask blocks 70% of the incoming spread).
 	- *mask_adoption* (decimal)
 		- How much the infected population impacts the number of people who wear masks.
 
