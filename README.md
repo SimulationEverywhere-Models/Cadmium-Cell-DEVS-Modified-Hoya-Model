@@ -1,4 +1,4 @@
-# JSON-configurable Cell-DEVS Hoya model with age-separated population, separation between virulence and susceptibility, deaths, infected capacity,  quarantines, and masks
+# JSON-configurable Cell-DEVS Hoya model with age-separated population, separation between virulence and susceptibility, deaths, infected capacity,  quarantines, masks, and lockdowns
 
 ## Populations
 	- *population* (integer)
@@ -39,8 +39,16 @@
 ## Masks
 	- *mask_use* (array of decimals)
 		- The amount of people in each age group that use masks.
-	- *mask_reduction* (decimal)
-		- The amount that the infection rate is reduced to (Eg. a value of 0.3 means that the mask blocks 70% of the spread).
+	- *mask_virulence_reduction* (decimal)
+		- The amount that the virulence rate is reduced to (Eg. a value of 0.3 means that the mask blocks 70% of the outgoing spread).
+	- *mask_susceptibility_reduction* (decimal)
+		- The amount that the susceptibility rate is reduced to (Eg. a value of 0.3 means that the mask blocks 70% of the incoming spread).
 	- *mask_adoption* (decimal)
 		- How much the infected population impacts the number of people who wear masks.
 
+## Lockdowns
+	- *lockdown_rates* (array of decimals)
+		- How much each age group is restricted from travel by the lockdown (1.0 is unaffected, 0.0 is most affected).
+	- *lockdown_adoption* (decimal)
+		- How much of an impact the current infected population has on the strength of the lockdown.
+	- (Note: Lockdowns are completely separate from Quarantines)
