@@ -67,7 +67,7 @@ To run a simulation with this model:
 - *over_capacity_modifier* (decimal)
 	- The mortality increase that is applied when the hospitals don't have enough space to handle the infected population.
 
-### Quarantines
+### "Quarantines" (consider changing name)
 - *phase_penalties* (array of arrays of decimals)
 	- Each array represents a phase, and the decimal values within those arrays represent the impact of that particular phase of the quarantine on the corresponding age group.
 - *phase_durations* (array of integers)
@@ -85,9 +85,12 @@ To run a simulation with this model:
 - *mask_adoption* (decimal)
 	- How much the infected population impacts the number of people who wear masks.
 
-### Lockdowns
+### "Lockdowns" (consider changing name)
 - *lockdown_rates* (array of decimals)
 	- How much each age group is restricted from travel by the lockdown (1.0 is unaffected, 0.0 is most affected).
 - *lockdown_adoption* (decimal)
 	- How much of an impact the current infected population has on the strength of the lockdown.
 - (Note: Lockdowns are completely separate from Quarantines)
+
+(consider adding an option/flag to select lockdown type)
+
