@@ -2,9 +2,15 @@
 import os
 import re
 from collections import defaultdict
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
 
-def main():
-    log_filename = "../../simulation_results/pandemic_hoya_age_json/output_messages.txt"
+
+def main(file_location = "../simulation_logs"):
+    filename = "output_messages.txt"
+    log_filepath = os.path.join(file_location, filename)
     dim = 25,25
     patt_out_line = "\{\((?P<x>\w+),(?P<y>\w+)\).*<(?P<state>[\w,. -]+)>"
     
@@ -22,12 +28,14 @@ def main():
         dec_acc = 0
         for i in range(len(curr_states)):
             for j in range(len(curr_states[0])):
+                #print(curr_states[i][j])
                 sus, inf, rec, dec = curr_states[i][j]
                 sus_acc += sus
                 inf_acc += inf
                 rec_acc += rec
                 dec_acc += dec
                 
+                #print(sus, inf, rec, dec, sus + inf + rec + dec)
                 assert 0.99 <= sus + inf + rec + dec < 1.01, (curr_time, i, j, sus + inf + rec + dec)
                 
         num_cells = len(curr_states) * len(curr_states[0])
@@ -39,7 +47,7 @@ def main():
         assert 0.999 <= sus_acc + inf_acc + rec_acc + dec_acc < 1.001, (curr_time, sus_acc + inf_acc + rec_acc + dec_acc)
         
         return [int(sim_time), sus_acc, inf_acc, rec_acc, dec_acc]
-    
+
     
     curr_time = None
     curr_states = []
@@ -50,42 +58,38 @@ def main():
             curr_states[-1].append([1, 0, 0, 0])
     
     
-            states = ["sus", "infec", "rec", "dec"]
-            data = []
-            curr_data = []
-            
-            with open(log_filename, "r") as log_file:
-                for line in log_file:
-                    line = line.strip()
-                    if line.isnumeric() and line != curr_time:
-                        curr_time = line
-                        data.append(curr_states_to_df_row(curr_time, curr_states))
-                        continue
-            
-                    match = re.search(patt_out_line, line)
-                    if not match:
-                        print(line)
-                        continue
-            
-                    x = int(match.group("x"))
-                    y = int(match.group("y"))
-            
-                    state = list(map(float, match.group("state").split(",")[-4:]))
-                    curr_states[x][y] = state
-                    
+    states = ["sus", "infec", "rec", "dec"]
+    data = []
+    curr_data = []
+    
+    with open(log_filepath, "r") as log_file:
+        for line in log_file:
+            line = line.strip()
+            if line.isnumeric() and line != curr_time:
+                curr_time = line
                 data.append(curr_states_to_df_row(curr_time, curr_states))
+                continue
+    
+            #print(line)
+            match = re.search(patt_out_line, line)
+            if not match:
+                print(line)
+                continue
+    
+            x = int(match.group("x"))
+            y = int(match.group("y"))
+    
+            state = list(map(float, match.group("state").split(",")[-4:]))
+            #print("Modifying %d,%d" % (x,y), state)
+            curr_states[x][y] = state
+            
+        data.append(curr_states_to_df_row(curr_time, curr_states))    
     
     
     data[:5]
-
-
-# Visualization
-def main_visualization():
-    import pandas as pd
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import matplotlib
     
+    
+    # Visualization    
     
     font = {'family' : 'Times New Roman',
             'weight' : 'normal',
@@ -101,7 +105,7 @@ def main_visualization():
     df_vis.head()
     
     
-    base_name = os.path.splitext(os.path.basename(log_filename))[0]
+    base_name = os.path.splitext(os.path.basename(log_filepath))[0]
     
     col_names = ["deceased", "infected", "recovered"]
     colors=[COLOR_DECEASED, COLOR_INFECTED, COLOR_RECOVERED]
@@ -156,6 +160,14 @@ def main_visualization():
     df_vis.to_pickle(base_name + ".pickle")
 
 if __name__ == "__main__":
-    main()
-    main_visualization()
+    sim_log_path = "output"
+    scenario_names = os.listdir(sim_log_path)
+    
+    for scenario in scenario_names:
+        current_dir = os.getcwd()
+        os.chdir(os.path.join(sim_log_path, scenario, "epidemic_graphs"))
+        ## BEGIN ##
+        main("../simulation_logs")
+        ## FINISH ##
+        os.chdir(current_dir)
 

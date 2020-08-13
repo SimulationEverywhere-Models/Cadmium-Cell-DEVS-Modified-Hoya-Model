@@ -54,7 +54,7 @@ def prepare_output_directory(scenarios, output_path = './output'):
         _make_directory(os.path.join(scenario_directory, 'simulation_logs'))
         _make_directory(os.path.join(scenario_directory, 'visualization_files'))
 
-def _move_simulation_results(scenario_directory, results_path = '../../simulation_results/pandemic_hoya_age_json'):
+def _move_simulation_results(scenario_directory, results_path = '../simulation_results/pandemic_hoya_age_json'):
     """
     scenario_directory:
     results_path:
@@ -71,7 +71,7 @@ def run_simulations(scenarios, executable_path = '..', output_path = './output',
     max_time:
     """
     #executable_path = os.path.abspath(executable_path)
-    results_path = os.path.join(executable_path, "../simulation_results/pandemic_hoya_age_json")
+    results_path = "../simulation_results/pandemic_hoya_age_json"
     for name in scenarios:
         scenario_directory = os.path.join(output_path, name)
         
@@ -91,9 +91,17 @@ def run_simulations(scenarios, executable_path = '..', output_path = './output',
         print(command_return)
         
         _move_simulation_results(scenario_directory, results_path)
+        
+        #current_dir = os.getcwd()
+        #os.chdir(os.path.join(scenario_directory, "epidemic_graphs"))
+        ### BEGIN OPERATING IN OTHER DIRECTORY ##
+        #notebook.main("../simulation_logs")
+        ### FINISH OPERATING IN OTHER DIRECTORY ##
+        #os.chdir(current_dir)
 
 if __name__ == "__main__":
     scenarios = gather_scenarios()
+    print(scenarios)
     prepare_output_directory(scenarios)
     run_simulations(scenarios)
 
