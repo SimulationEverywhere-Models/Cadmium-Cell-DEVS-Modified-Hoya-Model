@@ -19,11 +19,11 @@
 			"style": 1
 		},
 		{
-			"name": "susceptible_teen",
+			"name": "susceptible_adult",
 			"style": 1
 		},
 		{
-			"name": "susceptible_adult",
+			"name": "susceptible_senior",
 			"style": 1
 		},
 		{
@@ -35,11 +35,11 @@
 			"style": 1
 		},
 		{
-			"name": "infected_teen",
+			"name": "infected_adult",
 			"style": 1
 		},
 		{
-			"name": "infected_adult",
+			"name": "infected_senior",
 			"style": 1
 		},
 		{
@@ -51,11 +51,11 @@
 			"style": 1
 		},
 		{
-			"name": "recovered_teen",
+			"name": "recovered_adult",
 			"style": 1
 		},
 		{
-			"name": "recovered_adult",
+			"name": "recovered_senior",
 			"style": 1
 		},
 		{
@@ -67,11 +67,11 @@
 			"style": 3
 		},
 		{
-			"name": "deceased_teen",
+			"name": "deceased_adult",
 			"style": 3
 		},
 		{
-			"name": "deceased_adult",
+			"name": "deceased_senior",
 			"style": 3
 		},
 		{

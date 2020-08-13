@@ -58,3 +58,12 @@ logs/
 
 # Misc
 *.stackdump
+
+# Files in specific directories
+automation/output/*
+automation/scenarios/*
+automation/__pycache__/*
+simulation_results/*
+*/__pycache__/*
+
+# Specific Files
