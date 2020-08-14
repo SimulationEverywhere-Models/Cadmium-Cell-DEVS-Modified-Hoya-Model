@@ -67,14 +67,6 @@ To run a simulation with this model:
 - *over_capacity_modifier* (decimal)
 	- The mortality increase that is applied when the hospitals don't have enough space to handle the infected population.
 
-### Quarantines
-- *phase_penalties* (array of arrays of decimals)
-	- Each array represents a phase, and the decimal values within those arrays represent the impact of that particular phase of the quarantine on the corresponding age group.
-- *phase_durations* (array of integers)
-	- How long each corresponding phase lasts.
-- *disobedience* (array of decimals)
-	- The amount of people in each age group that disobey the quarantine rules.
-
 ### Masks
 - *mask_use* (array of decimals)
 	- The amount of people in each age group that use masks.
@@ -86,8 +78,35 @@ To run a simulation with this model:
 	- How much the infected population impacts the number of people who wear masks.
 
 ### Lockdowns
+- *lockdown_type* (integer)
+	- Lockdowns represent a response by the government or population that restricts movement to slow the spread of the disease. There are currently 4 types.
+
+#### Type 0 (no response)
+Lockdowns of this type will have no impact on the spread of the disease.
+
+#### Type 1 (scheduled lockdown in phases)
+- *lockdown_rates* (array of arrays of decimals)
+	- Each array represents a phase, and the decimal values within those arrays represent the impact of that particular phase of the lockdown on the corresponding age group.
+- *phase_durations* (array of integers)
+	- How long each corresponding phase lasts.
+- *disobedience* (array of decimals)
+	- The amount of people in each age group that disobey the lockdown rules.
+
+#### Type 2 (continuous reaction to infected)
 - *lockdown_rates* (array of decimals)
 	- How much each age group is restricted from travel by the lockdown (1.0 is unaffected, 0.0 is most affected).
 - *lockdown_adoption* (decimal)
 	- How much of an impact the current infected population has on the strength of the lockdown.
-- (Note: Lockdowns are completely separate from Quarantines)
+- *disobedience* (array of decimals)
+	- The amount of people in each age group that disobey the lockdown rules.
+
+#### Type 3 (reaction to infected in phases)
+- *lockdown_rates* (array of arrays of decimals)
+	- Each array represents a phase, and the decimal values within those arrays represent the impact of that particular phase of the lockdown on the corresponding age group.
+- *phase_thresholds* (array of decimals)
+	- How long each corresponding phase lasts.
+- *threshold_buffers* (array of decimals)
+	- How much the infection needs to fall below each phase threshold before the cell will revert to the lower phase.
+- *disobedience* (array of decimals)
+	- The amount of people in each age group that disobey the lockdown rules.
+
