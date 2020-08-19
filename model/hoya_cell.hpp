@@ -215,9 +215,9 @@ void from_json(const json& j, config &v) {
 
 class Lockdown {
 	public:
-		virtual ~Lockdown() = default;;
-		virtual std::vector<float> new_lockdown_factors(sir const &last_state) const {};
-		virtual unsigned int next_phase(int simulation_clock, sir const &last_state) const {};
+		virtual ~Lockdown() = default;
+		virtual std::vector<float> new_lockdown_factors(sir const &last_state) const { return {}; };
+		virtual unsigned int next_phase(int simulation_clock, sir const &last_state) const { return 0; };
 };
 
 class NoLockdown: public Lockdown {
@@ -225,11 +225,7 @@ class NoLockdown: public Lockdown {
 		NoLockdown() = default;
 
 		std::vector<float> new_lockdown_factors(sir const &last_state) const override {
-			std::vector<float> lockdown_factors = {};
-			for(auto _: last_state.infected) {
-				lockdown_factors.push_back(1.0); // Movement is not limited (1x normal)
-			}
-			return lockdown_factors;
+			return std::vector<float>(5, 1); // Movement is not limited (1x normal)
 		}
 
 		unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
@@ -288,7 +284,7 @@ class ReactionContinuousLockdown: public Lockdown {
 			double age_group_lockdown_factor;
 
 			for(int i = 0; i < last_state.infected.size(); i++) {
-				lockdown_strength = lockdown_adoption * total_infected;
+				lockdown_strength = 1.0 - (lockdown_adoption * total_infected);
 				age_group_lockdown_factor = disobedience[i] + (1.0 - disobedience[i]) * lockdown_strength * lockdown_rates[last_state.phase][i];
 
 				lockdown_factors.push_back(std::max(age_group_lockdown_factor, 0.0));
@@ -320,9 +316,10 @@ class ReactionPhaseLockdown: public Lockdown {
 		}
 
 		bool shouldGoToPreviousPhase(sir const &last_state) const {
-			if(last_state.phase - 1 < 0) {
+			if(last_state.phase <= 0) {
 				return false;
-			} else if(last_state.infected_ratio() < phase_thresholds[last_state.phase + 1] - threshold_buffers[last_state.phase + 1]) {
+			} else if((last_state.infected_ratio() + threshold_buffers[last_state.phase]) < phase_thresholds[last_state.phase]) { // The problem seems to be with this conditional. I have confirmed that false is returned from the else statement on every time after the cell first proceeds
+			//} else if(last_state.infected_ratio() <= phase_thresholds[last_state.phase]) {
 				return true;
 			} else {
 				return false;
@@ -346,9 +343,9 @@ class ReactionPhaseLockdown: public Lockdown {
 		unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
 			unsigned int temp_phase = last_state.phase;
 			if(shouldGoToNextPhase(last_state)) {
-				temp_phase ++;
+				temp_phase++;
 			} else if (shouldGoToPreviousPhase(last_state)) {
-				temp_phase --;
+				temp_phase--;
 			}
 
 			return temp_phase;
@@ -412,7 +409,7 @@ public:
 				break;
 
 			case 3: // lockdown type: reaction to infected in phases
-				lockdown = new ReactionPhaseLockdown(config.lockdown_rates, config.phase_thresholds, config.phase_thresholds, config.disobedience);
+				lockdown = new ReactionPhaseLockdown(config.lockdown_rates, config.phase_thresholds, config.threshold_buffers, config.disobedience);
 				break;
 
 			default: // lockdown type: no response
