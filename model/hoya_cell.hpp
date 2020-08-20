@@ -45,8 +45,12 @@ struct sir {
 	std::vector<float> infected;
 	std::vector<float> recovered;
 	std::vector<float> deceased;
-	sir() : population(0), susceptible({1}), infected({0}), recovered({0}), deceased({0}) {}  // a default constructor is required
-	sir(unsigned int pop, std::vector<float> &s, std::vector<float> &i, std::vector<float> &r, std::vector<float> &d) : population(pop), susceptible(s), infected(i), recovered(r), deceased(d) {}
+	sir() : population(0), susceptible({1}), infected({0}), recovered({0}), deceased({0}) {
+		phase = 0;
+	}  // a default constructor is required
+	sir(unsigned int pop, std::vector<float> &s, std::vector<float> &i, std::vector<float> &r, std::vector<float> &d) : population(pop), susceptible(s), infected(i), recovered(r), deceased(d) {
+		phase = 0;
+	}
 
 	template <typename T>
 	static T sum_vector(std::vector<T> const &v) {
@@ -82,9 +86,9 @@ std::ostream &operator << (std::ostream &os, const sir &x) {
 	float total_infected = 0.0;
 	float total_recovered = 0.0;
 	float total_deceased = 0.0;
-	
+
 	os << "<" << x.population << "," << x.phase;
-	
+
 	for(int i = 0; i < x.susceptible.size(); i++) {
 		total_susceptible += x.susceptible[i];
 		os << "," << x.susceptible[i];
@@ -101,7 +105,7 @@ std::ostream &operator << (std::ostream &os, const sir &x) {
 		total_deceased += x.deceased[i];
 		os << "," << x.deceased[i];
 	}
-	
+
 	os << "," << total_susceptible << "," << total_infected << "," << total_recovered << "," << total_deceased << ">";
 	return os;
 }
@@ -140,25 +144,32 @@ struct config {
 	std::vector<float> mortality;
 	float infected_capacity;
 	float over_capacity_modifier;
-	std::vector<std::vector<float>> phase_penalties;
-	std::vector<int> phase_durations;
-	std::vector<float> disobedience;
 	std::vector<float> mask_use;
     float mask_susceptibility_reduction;
     float mask_virulence_reduction;
 	float mask_adoption;
-    std::vector<float> lockdown_rates;
-    float lockdown_adoption;
 	float precision;
-	
-	config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), infected_capacity(0.1), over_capacity_modifier(1.5), phase_penalties({{0}}), 
-			phase_durations({1}), disobedience({0.0}), mask_use({1.0}), mask_susceptibility_reduction(0.5), mask_virulence_reduction(0.5), mask_adoption(0.5), lockdown_rates({0.0}), 
-			lockdown_adoption(0.0), precision(100) {}
-	
-	config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float &c, float &oc, std::vector<std::vector<float>> &pp, 
-			std::vector<int> &pd, std::vector<float> &d, std::vector<float> &mu, float &msr, float &mvr, float &ma, std::vector<float> &lr, float &la, float p): susceptibility(s), 
-			virulence(v), recovery(r), mortality(m), infected_capacity(c), over_capacity_modifier(oc), phase_durations(pd), disobedience(d), mask_use(mu), 
-			mask_susceptibility_reduction(msr), mask_virulence_reduction(mvr), mask_adoption(ma), lockdown_rates(lr), lockdown_adoption(la), precision(p) {}
+
+	unsigned int lockdown_type;
+	std::vector<std::vector<float>> lockdown_rates;
+	std::vector<int> phase_durations;
+	float lockdown_adoption;
+	std::vector<float> phase_thresholds;
+	std::vector<float> threshold_buffers;
+	std::vector<float> disobedience;
+
+	config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), infected_capacity(0.1), over_capacity_modifier(1.5), mask_use({1.0}),
+			mask_susceptibility_reduction(0.5), mask_virulence_reduction(0.5), mask_adoption(0.5), lockdown_type(0), lockdown_rates({{0.0}}), disobedience({0.0}),
+			phase_durations({1}), lockdown_adoption(0.0), phase_thresholds({0.0}), threshold_buffers({0.0}), precision(100) {}
+
+
+	config(std::vector<float> &s, std::vector<float> &v, std::vector<float> &r, std::vector<float> &m, float &c, float &oc, std::vector<float> &mu, float &msr, float &mvr,
+			float &ma, unsigned int &lt, std::vector<std::vector<float>> &lr, std::vector<float> &d, std::vector<int> &pd, float &la, std::vector<float> &pt,
+			std::vector<float> &tb, float p): susceptibility(s), virulence(v), recovery(r), mortality(m), infected_capacity(c), over_capacity_modifier(oc), mask_use(mu),
+			mask_susceptibility_reduction(msr), mask_virulence_reduction(mvr), mask_adoption(ma), lockdown_type(lt), lockdown_rates(lr), disobedience(d), phase_durations(pd),
+			lockdown_adoption(la), phase_thresholds(pt), threshold_buffers(tb), precision(p) {}
+
+
 };
 
 void from_json(const json& j, config &v) {
@@ -168,17 +179,178 @@ void from_json(const json& j, config &v) {
 	j.at("mortality").get_to(v.mortality);
 	j.at("infected_capacity").get_to(v.infected_capacity);
 	j.at("over_capacity_modifier").get_to(v.over_capacity_modifier);
-	j.at("phase_penalties").get_to(v.phase_penalties);
-    j.at("phase_durations").get_to(v.phase_durations);
-	j.at("disobedience").get_to(v.disobedience);
 	j.at("mask_use").get_to(v.mask_use);
     j.at("mask_susceptibility_reduction").get_to(v.mask_susceptibility_reduction);
     j.at("mask_virulence_reduction").get_to(v.mask_virulence_reduction);
 	j.at("mask_adoption").get_to(v.mask_adoption);
-    j.at("lockdown_rates").get_to(v.lockdown_rates);
-    j.at("lockdown_adoption").get_to(v.lockdown_adoption);
 	j.at("precision").get_to(v.precision);
+
+	j.at("lockdown_type").get_to(v.lockdown_type);
+
+	switch(v.lockdown_type) {
+		case 1: // lockdown type: scheduled lockdown in phases
+			j.at("lockdown_rates").get_to(v.lockdown_rates);
+			j.at("phase_durations").get_to(v.phase_durations);
+			j.at("disobedience").get_to(v.disobedience);
+			break;
+
+		case 2: // lockdown type: continuous reaction to infected
+			j.at("lockdown_rates").get_to(v.lockdown_rates);
+			j.at("lockdown_adoption").get_to(v.lockdown_adoption);
+			j.at("disobedience").get_to(v.disobedience);
+			break;
+
+		case 3: // lockdown type: reaction to infected in phases
+			j.at("lockdown_rates").get_to(v.lockdown_rates);
+			j.at("phase_thresholds").get_to(v.phase_thresholds);
+			j.at("threshold_buffers").get_to(v.threshold_buffers);
+			j.at("disobedience").get_to(v.disobedience);
+			break;
+
+		default: // lockdown type: no response
+			v.lockdown_type = 0;
+			break;
+	}
 }
+
+class Lockdown {
+	public:
+		virtual ~Lockdown() = default;
+		virtual std::vector<float> new_lockdown_factors(sir const &last_state) const { return {}; };
+		virtual unsigned int next_phase(int simulation_clock, sir const &last_state) const { return 0; };
+};
+
+class NoLockdown: public Lockdown {
+	public:
+		NoLockdown() = default;
+
+		std::vector<float> new_lockdown_factors(sir const &last_state) const override {
+			return std::vector<float>(5, 1); // Movement is not limited (1x normal)
+		}
+
+		unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
+			return 0;
+		}
+};
+
+class ScheduledPhaseLockdown: public Lockdown {
+	const std::vector<std::vector<float>> lockdown_rates;
+	const std::vector<int> phase_durations;
+	const std::vector<float> disobedience;
+
+	public:
+		ScheduledPhaseLockdown(std::vector<std::vector<float>> &lr, std::vector<int> &pd, std::vector<float> &d): lockdown_rates(lr), phase_durations(pd), disobedience(d) {}
+
+		std::vector<float> new_lockdown_factors(sir const &last_state) const override {
+			std::vector<float> lockdown_factors = {};
+			double age_group_lockdown_factor;
+			for(int i = 0; i < last_state.infected.size(); i++) {
+				age_group_lockdown_factor = disobedience[i] + (1.0 - disobedience[i]) * lockdown_rates[last_state.phase][i];
+
+				lockdown_factors.push_back(age_group_lockdown_factor);
+			}
+			return lockdown_factors;
+		}
+
+		unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
+			int days_sum = 0;
+			for(int phase_duration: phase_durations) {
+				days_sum += phase_duration;
+			}
+
+			int aux = simulation_clock % days_sum;
+			int i = 0;
+
+			for(i = 0; aux >= phase_durations[i]; i++) {
+				aux -= phase_durations[i];
+			}
+
+			return i;
+		}
+};
+
+class ReactionContinuousLockdown: public Lockdown {
+	const std::vector<std::vector<float>> lockdown_rates;
+	const float lockdown_adoption;
+	const std::vector<float> disobedience;
+
+	public:
+		ReactionContinuousLockdown(std::vector<std::vector<float>> &lr, float &la, std::vector<float> &d): lockdown_rates(lr), lockdown_adoption(la), disobedience(d) {}
+
+		std::vector<float> new_lockdown_factors(sir const &last_state) const override {
+			std::vector<float> lockdown_factors = {};
+			float total_infected = last_state.infected_ratio();
+			float lockdown_strength;
+			double age_group_lockdown_factor;
+
+			for(int i = 0; i < last_state.infected.size(); i++) {
+				lockdown_strength = 1.0 - (lockdown_adoption * total_infected);
+				age_group_lockdown_factor = disobedience[i] + (1.0 - disobedience[i]) * lockdown_strength * lockdown_rates[last_state.phase][i];
+
+				lockdown_factors.push_back(std::max(age_group_lockdown_factor, 0.0));
+			}
+			return lockdown_factors;
+		}
+
+		unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
+			return 0;
+		}
+};
+
+
+class ReactionPhaseLockdown: public Lockdown {
+	const std::vector<std::vector<float>> lockdown_rates;
+	const std::vector<float> phase_thresholds;
+	const std::vector<float> threshold_buffers;
+	const std::vector<float> disobedience;
+
+	private:
+		bool shouldGoToNextPhase(sir const &last_state) const {
+			if(last_state.phase + 1 >= phase_thresholds.size()) {
+				return false;
+			} else if(last_state.infected_ratio() >= phase_thresholds[last_state.phase + 1]) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		bool shouldGoToPreviousPhase(sir const &last_state) const {
+			if(last_state.phase <= 0) {
+				return false;
+			} else if((last_state.infected_ratio() + threshold_buffers[last_state.phase]) < phase_thresholds[last_state.phase]) { // The problem seems to be with this conditional. I have confirmed that false is returned from the else statement on every time after the cell first proceeds
+			//} else if(last_state.infected_ratio() <= phase_thresholds[last_state.phase]) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+	public:
+		ReactionPhaseLockdown(std::vector<std::vector<float>> &lr, std::vector<float> &pt, std::vector<float> &tb, std::vector<float> &d): lockdown_rates(lr), phase_thresholds(pt), threshold_buffers(tb), disobedience(d) {}
+
+		std::vector<float> new_lockdown_factors(sir const &last_state) const override {
+			std::vector<float> lockdown_factors = {};
+			double age_group_lockdown_factor;
+			for(int i = 0; i < last_state.infected.size(); i++) {
+				age_group_lockdown_factor = disobedience[i] + (1 - disobedience[i]) * lockdown_rates[last_state.phase][i];
+
+				lockdown_factors.push_back(age_group_lockdown_factor);
+			}
+			return lockdown_factors;
+		}
+
+		unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
+			unsigned int temp_phase = last_state.phase;
+			if(shouldGoToNextPhase(last_state)) {
+				temp_phase++;
+			} else if (shouldGoToPreviousPhase(last_state)) {
+				temp_phase--;
+			}
+
+			return temp_phase;
+		}
+};
 
 template <typename T>
 class hoya_cell : public grid_cell<T, sir, mc> {
@@ -188,7 +360,7 @@ public:
     using grid_cell<T, sir, mc>::state;
     using grid_cell<T, sir, mc>::map;
     using grid_cell<T, sir, mc>::neighbors;
-	
+
 	using config_type = config;  // IMPORTANT FOR THE JSON
 	std::vector<float> susceptibility;
 	std::vector<float> virulence;
@@ -196,20 +368,18 @@ public:
 	std::vector<float> mortality;
 	float infected_capacity;
 	float over_capacity_modifier;
-	std::vector<std::vector<float>> phase_penalties;
-    std::vector<int> phase_durations;
-	std::vector<float> disobedience;
 	std::vector<float> mask_use;
     float mask_susceptibility_reduction;
     float mask_virulence_reduction;
 	float mask_adoption;
-    std::vector<float> lockdown_rates;
-    float lockdown_adoption;
+	unsigned int lockdown_type;
+	Lockdown *lockdown;
 	std::vector<float> age_ratio;
 	float precision = 100;
-	
-	hoya_cell() : grid_cell<T, sir, mc>() {}
-	
+
+
+	hoya_cell() : grid_cell<T, sir, mc>()  {}
+
 	hoya_cell(cell_position const &cell_id, cell_unordered<mc> const &neighborhood, sir &initial_state,
 			cell_map<sir, mc> const &map_in, std::string const &delay_id, config &config) :
 			grid_cell<T, sir, mc>(cell_id, neighborhood, initial_state, map_in, delay_id) {
@@ -219,91 +389,111 @@ public:
 		mortality = config.mortality;
 		infected_capacity = config.infected_capacity;
 		over_capacity_modifier = config.over_capacity_modifier;
-		phase_penalties = config.phase_penalties;
-        phase_durations = config.phase_durations;
-		disobedience = config.disobedience;
 		mask_use = config.mask_use;
         mask_susceptibility_reduction = config.mask_susceptibility_reduction;
         mask_virulence_reduction = config.mask_virulence_reduction;
 		mask_adoption = config.mask_adoption;
-        lockdown_rates = config.lockdown_rates;
-        lockdown_adoption = config.lockdown_adoption;
 		precision = config.precision;
 		age_ratio = std::vector<float>();
 		auto s = state.current_state;
-		
+
+		lockdown_type = config.lockdown_type;
+
+		switch(lockdown_type) {
+			case 1: // lockdown type: scheduled lockdown in phases
+				lockdown = new ScheduledPhaseLockdown(config.lockdown_rates, config.phase_durations, config.disobedience);
+				break;
+
+			case 2: // lockdown type: continuous reaction to infected
+				lockdown = new ReactionContinuousLockdown(config.lockdown_rates, config.lockdown_adoption, config.disobedience);
+				break;
+
+			case 3: // lockdown type: reaction to infected in phases
+				lockdown = new ReactionPhaseLockdown(config.lockdown_rates, config.phase_thresholds, config.threshold_buffers, config.disobedience);
+				break;
+
+			default: // lockdown type: no response
+				lockdown_type = 0;
+				lockdown = new NoLockdown();
+				break;
+		}
+
 		for (int i = 0; i < n_age_segments(); i++) {
 			float ratio = std::round(precision * (s.susceptible[i] + s.infected[i] + s.recovered[i] + s.deceased[i])) / precision;
 			age_ratio.push_back(ratio);
 		}
 	}
-	
+
 	unsigned int inline n_age_segments() const {
 		return virulence.size();
 	}
-	
+
 	// user must define this function. It returns the next cell state and its corresponding timeout
 	sir local_computation() const override {
 		auto res = state.current_state;
 		auto new_i = new_infections(res);
 		auto new_r = new_recoveries(res);
 		auto new_d = new_deaths(res);
-		
+
+		res.phase = lockdown->next_phase(simulation_clock, res);
+
 		for (int i = 0; i < n_age_segments(); i++) {
 			res.recovered[i] = std::round((res.recovered[i] + new_r[i]) * precision) / precision;
 			res.deceased[i] = std::round((res.deceased[i] + new_d[i]) * precision) / precision;
 			res.infected[i] = std::round((res.infected[i] + new_i[i] - (new_r[i] + new_d[i])) * precision) / precision;
 			res.susceptible[i] = age_ratio[i] - (res.recovered[i] + res.infected[i] + res.deceased[i]);
-		}		
-		res.phase = next_phase(res.phase);
-		
+		}
+
 		return res;
 	}
-	
+
 	// It returns the delay to communicate cell's new state.
 	T output_delay(sir const &cell_state) const override {
 		return 1;
 	}
-	
+
 	std::vector<float> new_infections(sir const &last_state) const {
 		std::vector<float> aux = std::vector<float>();
 		std::vector<float> res = std::vector<float>();
 		float mask_impact;
 		std::vector<float> local_mask_rates = new_mask_rates(last_state);
 		std::vector<float> neighbor_mask_rates;
-		std::vector<float> lockdown_factors = new_lockdown_factors(last_state);
+		std::vector<float> lockdown_factors;
+		lockdown_factors = lockdown->new_lockdown_factors(last_state);
 		float mobility;
-		
+
 		for (int i = 0; i < n_age_segments(); i++) {
 			aux.push_back(0);
 		}
 		for(auto neighbor: neighbors) {
-			sir n = state.neighbors_state.at(neighbor);
-			mc v = state.neighbors_vicinity.at(neighbor);
-			
+			sir n;
+			mc v;
+			n = state.neighbors_state.at(neighbor);
+			v = state.neighbors_vicinity.at(neighbor);
+
 			float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
-			neighbor_mask_rates = new_mask_rates(n); 
-			
+			neighbor_mask_rates = new_mask_rates(n);
+
 			for(int i = 0; i < n_age_segments(); i++) {
-				mobility = (disobedience[i] + (1 - disobedience[i]) * phase_penalties[n.phase][i]) * lockdown_factors[i] * v.movement[i] * v.connection[i];
+				mobility = lockdown_factors[i] * v.movement[i] * v.connection[i];
 				mask_impact = (1.0 - local_mask_rates[i] + (local_mask_rates[i] * mask_susceptibility_reduction)) * (1.0 - neighbor_mask_rates[i] + (neighbor_mask_rates[i] * mask_virulence_reduction));
 				aux[i] += total_infected * n.population * virulence[i] * mobility * mask_impact;
 			}
 		}
-		
+
 		neighbor_mask_rates = local_mask_rates;
 		for (int i = 0; i < n_age_segments(); i++) {
 			if (aux[i] > 0)
 				aux[i] += 0;
-			
+
 			mask_impact = (1.0 - local_mask_rates[i] + (local_mask_rates[i] * mask_susceptibility_reduction)) * (1.0 - neighbor_mask_rates[i] + (neighbor_mask_rates[i] * mask_virulence_reduction));
 			aux[i] += last_state.infected_ratio() * last_state.population * virulence[i] * mask_impact;
-			
+
 			res.push_back(std::min(last_state.susceptible[i], last_state.susceptible[i] * aux[i] * susceptibility[i] / (float)last_state.population));
 		}
 		return res;
 	}
-	
+
 	std::vector<float> new_recoveries(sir const &last_state) const {
 		std::vector<float> new_r = std::vector<float>();
 		for(int i = 0; i < n_age_segments(); i++) {
@@ -315,77 +505,44 @@ public:
 	std::vector<float> new_deaths(sir const &last_state) const {
 		std::vector<float> new_d = std::vector<float>();
 		float total_infected = 0;
-		
+
 		// Apply the regular mortality rate
 		for(int i = 0; i < n_age_segments(); i++) {
 			total_infected += last_state.infected[i];
 			new_d.push_back(last_state.infected[i] * mortality[i]);
 		}
-		
+
 		// Increase mortality if too many people are infected
 		if(total_infected > infected_capacity) {
 			for(int i = 0; i < n_age_segments(); i++) {
 				new_d[i] *= over_capacity_modifier;
 			}
 		}
-		
+
 		// Make sure there aren't more deaths than people currently infected
 		for(int i = 0; i < n_age_segments(); i++) {
 			if(new_d[i] > last_state.infected[i]) {
 				new_d[i] = last_state.infected[i];
 			}
 		}
-		
+
 		return new_d;
 	}
-	
-	unsigned int next_phase(unsigned int phase) const {
-		int days_sum = 0;
-		for(int phase_duration: phase_durations) {
-			days_sum += phase_duration;
-		}
-		
-		int aux = (int)(simulation_clock) % (days_sum);
-		int i = 0;
-		
-		for(i = 0; aux >= phase_durations[i]; i++) {
-			aux -= phase_durations[i];
-		}
-		
-		return i;
-	}
-	
+
 	std::vector<float> new_mask_rates(sir const &last_state) const {
 		std::vector<float> mask_rates = std::vector<float>();
 		float total_infected = 0;
 		for(int i = 0; i < n_age_segments(); i++) {
 			total_infected += last_state.infected[i];
 		}
-		
+
 		for(int i = 0; i < n_age_segments(); i++) {
 			double age_group_mask_rate = mask_use[i] * mask_adoption * total_infected;
 			mask_rates.push_back(std::min(age_group_mask_rate, 1.0));
 			// ^ no more than 100% of people can wear masks
 		}
-		
+
 		return mask_rates;
-	}
-	
-	std::vector<float> new_lockdown_factors(sir const &last_state) const {
-		std::vector<float> lockdown_factors = std::vector<float>();
-		float total_infected = 0;
-		double age_group_lockdown_factor = 0;
-		for(int i = 0; i < n_age_segments(); i++) {
-			total_infected += last_state.infected[i];
-		}
-		
-		for(int i = 0; i < n_age_segments(); i++) {
-			age_group_lockdown_factor = (1 - lockdown_adoption * total_infected) + (lockdown_rates[i] * lockdown_adoption * total_infected);
-			
-			lockdown_factors.push_back(std::max(age_group_lockdown_factor, 0.0));
-		}
-		
-		return lockdown_factors;
 	}
 };
 

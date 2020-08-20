@@ -19,17 +19,21 @@
 				"mortality": [ 0, 0.001576988187, 0.01775421282, 0.054273645936 ],
 				"infected_capacity": 1.00,
 				"over_capacity_modifier": 1.0,
-				"phase_penalties": [ 
-					[ 1.0, 1.0, 1.0, 1.0 ]
-				],
-				"phase_durations": [ 1 ],
-				"disobedience": [ 1.0, 1.0, 1.0, 1.0 ],
 				"mask_use": [ 0.0, 0.0, 0.0, 0.0 ],
 				"mask_susceptibility_reduction": 1.0,
 				"mask_virulence_reduction": 1.0,
 				"mask_adoption": 0.0, 
-				"lockdown_rates": [ 1.0, 1.0, 1.0, 1.0 ],
-				"lockdown_adoption": 0.0,
+				"lockdown_type": 1,
+				"lockdown_rates": [ 
+					[ 1.0, 1.0, 1.0, 1.0 ],
+					[ 0.5, 0.5, 0.5, 0.5 ],
+					[ 0.25, 0.25, 0.25, 0.25 ]
+				],
+				"phase_durations": [ 1, 20, 999 ],
+				"lockdown_adoption": 1.0,
+				"phase_thresholds": [ 0.00, 0.05, 0.10 ],
+				"threshold_buffers": [ 0.00, 0.02, 0.05 ],
+				"disobedience": [ 0.0, 0.0, 0.0, 0.0 ],
 				"precision": 1000
 			}
 		},
