@@ -23,7 +23,7 @@
 				"mask_susceptibility_reduction": 1.0,
 				"mask_virulence_reduction": 1.0,
 				"mask_adoption": 0.0, 
-				"lockdown_type": 1,
+				"lockdown_type": 0,
 				"lockdown_rates": [ 
 					[ 1.0, 1.0, 1.0, 1.0 ],
 					[ 0.5, 0.5, 0.5, 0.5 ],

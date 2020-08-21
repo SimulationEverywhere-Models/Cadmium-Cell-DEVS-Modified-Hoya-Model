@@ -453,45 +453,47 @@ public:
 	}
 
 	std::vector<float> new_infections(sir const &last_state) const {
-		std::vector<float> aux = std::vector<float>();
-		std::vector<float> res = std::vector<float>();
-		float mask_impact;
-		std::vector<float> local_mask_rates = new_mask_rates(last_state);
-		std::vector<float> neighbor_mask_rates;
-		std::vector<float> lockdown_factors;
-		lockdown_factors = lockdown->new_lockdown_factors(last_state);
-		float mobility;
+		std::vector<float> new_inf = {};
+		std::vector<float> virulence_factors = std::vector<float>(n_age_segments(), 0.0);
+		std::vector<float> susceptibility_factors = std::vector<float>(n_age_segments(), 0.0);
+		float total_virulence_factor = 0.0;
 
-		for (int i = 0; i < n_age_segments(); i++) {
-			aux.push_back(0);
-		}
 		for(auto neighbor: neighbors) {
-			sir n;
-			mc v;
-			n = state.neighbors_state.at(neighbor);
-			v = state.neighbors_vicinity.at(neighbor);
+			sir neighbor_state;
+			neighbor_state = state.neighbors_state.at(neighbor);
+			mc neighbor_vicinity;
+			neighbor_vicinity = state.neighbors_vicinity.at(neighbor);
+			std::vector<float> mobility;
+			mobility = find_mobility_factors(neighbor_vicinity);
+			std::vector<float> neighbor_virulence_factors;
+			neighbor_virulence_factors = find_virulence_factors(neighbor_state);
 
-			float total_infected = n.infected_ratio();  // This is the sum of all the infected people in neighbor cell, regardless of age
-			neighbor_mask_rates = new_mask_rates(n);
-
-			for(int i = 0; i < n_age_segments(); i++) {
-				mobility = lockdown_factors[i] * v.movement[i] * v.connection[i];
-				mask_impact = (1.0 - local_mask_rates[i] + (local_mask_rates[i] * mask_susceptibility_reduction)) * (1.0 - neighbor_mask_rates[i] + (neighbor_mask_rates[i] * mask_virulence_reduction));
-				aux[i] += total_infected * n.population * virulence[i] * mobility * mask_impact;
+			for(int i = 0; i < neighbor_virulence_factors.size(); i++) {
+				virulence_factors[i] += neighbor_virulence_factors[i] * mobility[i];
 			}
 		}
+		// ^ find how much the neighbouring cells are contributing to infection
 
-		neighbor_mask_rates = local_mask_rates;
-		for (int i = 0; i < n_age_segments(); i++) {
-			if (aux[i] > 0)
-				aux[i] += 0;
-
-			mask_impact = (1.0 - local_mask_rates[i] + (local_mask_rates[i] * mask_susceptibility_reduction)) * (1.0 - neighbor_mask_rates[i] + (neighbor_mask_rates[i] * mask_virulence_reduction));
-			aux[i] += last_state.infected_ratio() * last_state.population * virulence[i] * mask_impact;
-
-			res.push_back(std::min(last_state.susceptible[i], last_state.susceptible[i] * aux[i] * susceptibility[i] / (float)last_state.population));
+		std::vector<float> local_virulence_factors;
+		local_virulence_factors = find_virulence_factors(last_state);
+		for(int i = 0; i < local_virulence_factors.size(); i++) {
+			virulence_factors[i] += local_virulence_factors[i];
 		}
-		return res;
+		// ^ find how much this cell is contributing to its own infection
+
+		susceptibility_factors = find_susceptibility_factors(last_state);
+		// ^ find how vulnerable this cell is to infection
+
+		for(int i = 0; i < virulence_factors.size(); i++) {
+			total_virulence_factor += virulence_factors[i];
+		}
+
+		for(int i = 0; i < n_age_segments(); i++) {
+			float new_infected_amount = last_state.susceptible[i] * total_virulence_factor * susceptibility_factors[i] / (float)last_state.population;
+			new_inf.push_back(std::min(last_state.susceptible[i], new_infected_amount));
+		}
+
+		return new_inf;
 	}
 
 	std::vector<float> new_recoveries(sir const &last_state) const {
@@ -529,20 +531,65 @@ public:
 		return new_d;
 	}
 
-	std::vector<float> new_mask_rates(sir const &last_state) const {
-		std::vector<float> mask_rates = std::vector<float>();
-		float total_infected = 0;
-		for(int i = 0; i < n_age_segments(); i++) {
-			total_infected += last_state.infected[i];
-		}
+
+	std::vector<float> find_virulence_factors(sir const &last_state) const {
+		std::vector<float> virulence_factors = {};
+		std::vector<float> mask_rates;
+		mask_rates= find_mask_rates(last_state);
+		std::vector<float> lockdown_factors;
+		lockdown_factors = lockdown->new_lockdown_factors(last_state);
 
 		for(int i = 0; i < n_age_segments(); i++) {
-			double age_group_mask_rate = mask_use[i] * mask_adoption * total_infected;
-			mask_rates.push_back(std::min(age_group_mask_rate, 1.0));
-			// ^ no more than 100% of people can wear masks
+			float infected_count = last_state.infected[i] * last_state.population;
+			float mask_impact = (1.0 - mask_rates[i]) + (mask_rates[i] * mask_virulence_reduction);
+
+			virulence_factors.push_back(infected_count * virulence[i]  * mask_impact * lockdown_factors[i]);
 		}
 
-		return mask_rates;
+		return virulence_factors;
+	}
+
+	std::vector<float> find_susceptibility_factors(sir const &last_state) const {
+		std::vector<float> susceptibility_factors = {};
+		std::vector<float> mask_rates = find_mask_rates(last_state);
+
+		for(int i = 0; i < n_age_segments(); i++) {
+			float age_group_susceptibility_factor;
+			float mask_impact = (1.0 - mask_rates[i]) + (mask_rates[i] * mask_susceptibility_reduction);
+
+			age_group_susceptibility_factor = susceptibility[i] * mask_impact;
+
+			susceptibility_factors.push_back(age_group_susceptibility_factor);
+		}
+
+		return susceptibility_factors;
+	}
+
+	std::vector<float> find_mobility_factors(mc const &cell_vicinity) const {
+		std::vector<float> mobility_factors = {};
+
+		for(int i = 0; i < n_age_segments(); i++) {
+			mobility_factors.push_back(cell_vicinity.movement[i] * cell_vicinity.connection[i]);
+		}
+
+		return mobility_factors;
+	}
+
+	std::vector<float> find_mask_rates(sir const &last_state) const {
+			std::vector<float> mask_rates = std::vector<float>();
+			float total_infected = 0;
+			for(int i = 0; i < n_age_segments(); i++) {
+				total_infected += last_state.infected[i];
+			}
+			// ^ the amount of infected people affects the likelihood of the population to wear masks
+
+			for(int i = 0; i < n_age_segments(); i++) {
+				double age_group_mask_rate = mask_use[i] * mask_adoption * total_infected;
+				mask_rates.push_back(std::min(age_group_mask_rate, 1.0));
+				// ^ no more than 100% of people can wear masks
+			}
+
+			return mask_rates;
 	}
 };
 
