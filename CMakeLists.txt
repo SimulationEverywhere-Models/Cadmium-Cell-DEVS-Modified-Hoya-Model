@@ -9,8 +9,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 include_directories(../../cadmium/include)
 include_directories(../../cadmium/json)
-#include_directories(/home/binybrion/Work_Summer2020/cadmium-json/include)
-#include_directories(/home/binybrion/Work_Summer2020/cadmium-json/json/include)
 
 set(Boost_USE_MULTITHREADED TRUE)
 find_package(Boost COMPONENTS unit_test_framework system thread REQUIRED)
