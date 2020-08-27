@@ -25,22 +25,96 @@ if __name__ == "__main__":
     base_scenario = get_json("./scenarios/base_scenario.json")
     #print("\n\n", base_scenario)
     
-    for i in range(10):
+    for i in range(11):
         temp_scenario = copy.deepcopy(base_scenario)
-        temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_virulence_reduction"] = i/10
+        disobedience = []
+        for age_group in temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"]:
+            disobedience.insert(0, (10-i)/10)
+        disobedience[2:4] = [0.0, 0.0]
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["lockdown_type"] = 1
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"] = disobedience
         #print("\n\n", temp_scenario)
-        scenarios["surgical_{0}".format(i*10)] = copy.deepcopy(temp_scenario)
+        scenarios["Lockdown_SP_{0}".format(i*10)] = copy.deepcopy(temp_scenario)
         temp_scenario.clear()
     
-    for i in range(10):
+    for i in range(11):
+        temp_scenario = copy.deepcopy(base_scenario)
+        disobedience = []
+        for age_group in temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"]:
+            disobedience.insert(0, (10-i)/10)
+        disobedience[2:4] = [0.0, 0.0]
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["lockdown_type"] = 2
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"] = disobedience
+        #print("\n\n", temp_scenario)
+        scenarios["Lockdown_RC_{0}".format(i*10)] = copy.deepcopy(temp_scenario)
+        temp_scenario.clear()
+    
+    for i in range(11):
+        temp_scenario = copy.deepcopy(base_scenario)
+        disobedience = []
+        for age_group in temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"]:
+            disobedience.insert(0, (10-i)/10)
+        disobedience[2:4] = [0.0, 0.0]
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["lockdown_type"] = 3
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"] = disobedience
+        #print("\n\n", temp_scenario)
+        scenarios["Lockdown_RP_{0}".format(i*10)] = copy.deepcopy(temp_scenario)
+        temp_scenario.clear()
+    
+    for i in range(11):
         temp_scenario = copy.deepcopy(base_scenario)
         mask_use = []
         for age_group in temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_use"]:
-            mask_use.append(1-(i/10))
+            mask_use.append(i/10)
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["lockdown_type"] = 0
         temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_use"] = mask_use
-        temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_susceptibility_reduction"] = 0
         #print("\n\n", temp_scenario)
-        scenarios["ffp2_{0}".format(100-(i*10))] = copy.deepcopy(temp_scenario)
+        scenarios["Masks_{0}".format(i*10)] = copy.deepcopy(temp_scenario)
+        temp_scenario.clear()
+    
+    for i in range(11):
+        temp_scenario = copy.deepcopy(base_scenario)
+        mask_use = []
+        disobedience = []
+        for age_group in temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_use"]:
+            mask_use.append(i/10)
+            disobedience.insert(0, (10-i)/10)
+        disobedience[2:4] = [0.0, 0.0]
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["lockdown_type"] = 1
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_use"] = mask_use
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"] = disobedience
+        #print("\n\n", temp_scenario)
+        scenarios["Masks_Lockdown_SP_{0}".format(i*10)] = copy.deepcopy(temp_scenario)
+        temp_scenario.clear()
+    
+    for i in range(11):
+        temp_scenario = copy.deepcopy(base_scenario)
+        mask_use = []
+        disobedience = []
+        for age_group in temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_use"]:
+            mask_use.append(i/10)
+            disobedience.insert(0, (10-i)/10)
+        disobedience[2:4] = [0.0, 0.0]
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["lockdown_type"] = 2
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_use"] = mask_use
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"] = disobedience
+        #print("\n\n", temp_scenario)
+        scenarios["Masks_Lockdown_RC_{0}".format(i*10)] = copy.deepcopy(temp_scenario)
+        temp_scenario.clear()
+    
+    for i in range(11):
+        temp_scenario = copy.deepcopy(base_scenario)
+        mask_use = []
+        disobedience = []
+        for age_group in temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_use"]:
+            mask_use.append(i/10)
+            disobedience.insert(0, (10-i)/10)
+        disobedience[2:4] = [0.0, 0.0]
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["lockdown_type"] = 3
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["mask_use"] = mask_use
+        temp_scenario["scenario"]["default_config"]["hoya_age"]["disobedience"] = disobedience
+        #print("\n\n", temp_scenario)
+        scenarios["Masks_Lockdown_RP_{0}".format(i*10)] = copy.deepcopy(temp_scenario)
         temp_scenario.clear()
     
     #print("\n\n", base_scenario)

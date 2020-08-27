@@ -19,8 +19,7 @@ def main(output_directory):
 if __name__ == "__main__":
     scenario_stats = dict()
     sim_log_path = "output"
-    scenario_names = os.listdir(sim_log_path)
-    scenario_names = filter(lambda name: name[-4:] != ".zip", scenario_names)
+    scenario_names = [f for f in os.listdir(sim_log_path) if not os.path.isfile(os.path.join(sim_log_path, f))]
     analysis = pandas.DataFrame([], columns = ["scenario", "infection_peak", "final_dead", "final_uninfected"])
     
     for scenario in scenario_names:

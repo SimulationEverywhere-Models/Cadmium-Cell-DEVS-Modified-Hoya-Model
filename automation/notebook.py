@@ -161,7 +161,7 @@ def main(file_location = "../simulation_logs"):
 
 if __name__ == "__main__":
     sim_log_path = "output"
-    scenario_names = os.listdir(sim_log_path)
+    scenario_names = [f for f in os.listdir(sim_log_path) if not os.path.isfile(os.path.join(sim_log_path, f))]
     
     for scenario in scenario_names:
         current_dir = os.getcwd()

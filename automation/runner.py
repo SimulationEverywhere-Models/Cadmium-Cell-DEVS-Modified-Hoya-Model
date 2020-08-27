@@ -63,7 +63,7 @@ def _move_simulation_results(scenario_directory, results_path = '../simulation_r
     shutil.copy(os.path.join(results_path, 'output_messages.txt'), os.path.join(scenario_directory, 'simulation_logs', 'output_messages.txt'))
     shutil.copy(os.path.join(results_path, 'state.txt'), os.path.join(scenario_directory, 'simulation_logs', 'state.txt'))    
 
-def run_simulations(scenarios, executable_path = '..', output_path = './output', max_time = 500):
+def run_simulations(scenarios, executable_path = '..', output_path = './output', max_time = 1000):
     """
     scenarios:
     executable_path:
