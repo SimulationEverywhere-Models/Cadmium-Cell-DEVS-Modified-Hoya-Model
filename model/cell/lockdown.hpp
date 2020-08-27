@@ -40,8 +40,7 @@ public:
     NoLockdown() = default;
 
     [[nodiscard]] std::vector<float> new_lockdown_factors(sir const &last_state) const override {
-        return std::vector<float>(5, 1); // Movement is not limited (1x normal)
-        // TODO Why do you use 5 elements instead of the number of age segments?
+        return std::vector<float>(last_state.susceptible.size(), 1); // Movement is not limited (1x normal)
     }
 
     [[nodiscard]] unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
@@ -53,7 +52,7 @@ class ScheduledPhaseLockdown: public Lockdown {
     const std::vector<std::vector<float>> lockdown_rates;
     const std::vector<int> phase_durations;
     const std::vector<float> disobedience;
-    int days_sum;  // TODO I leave this precomputed for slightly better performance
+    int days_sum;
 
 public:
     ScheduledPhaseLockdown(std::vector<std::vector<float>> &lr, std::vector<int> &pd, std::vector<float> &d):
@@ -77,7 +76,7 @@ public:
     [[nodiscard]] unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
         int aux = simulation_clock % days_sum;
         int i = 0;
-        while (aux >= phase_durations.at(i)) {  // TODO Check this. I prefer to use while structures for what you were trying (just style issues)
+        while (aux >= phase_durations.at(i)) {
             aux -= phase_durations.at(i++);
         }
         return i;
