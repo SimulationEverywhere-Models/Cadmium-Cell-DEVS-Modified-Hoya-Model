@@ -60,10 +60,11 @@ logs/
 *.stackdump
 
 # Files in specific directories
-automation/output
-automation/scenarios
-automation/__pycache__
-simulation_results
-*/__pycache__
+*/__pycache__/*
+automation/output/*
+automation/scenarios/*
+automation/analysis/*
+simulation_results/*
 
-# Specific Files
+
+# Specific files
