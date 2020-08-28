@@ -25,29 +25,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CADMIUM_CELLDEVS_HOYA_COUPLED_HPP
-#define CADMIUM_CELLDEVS_HOYA_COUPLED_HPP
+#ifndef PANDEMIC_HOYA_2002_VICINITY_HPP
+#define PANDEMIC_HOYA_2002_VICINITY_HPP
 
 #include <nlohmann/json.hpp>
-#include <cadmium/celldevs/coupled/grid_coupled.hpp>
-#include "cell/hoya_cell.hpp"
 
-template <typename T>
-class hoya_coupled : public cadmium::celldevs::grid_coupled<T, sir, mc> {
-public:
-
-    explicit hoya_coupled(std::string const &id) : grid_coupled<T, sir, mc>(id){}
-
-    template <typename X>
-    using cell_unordered = std::unordered_map<std::string,X>;
-
-    void add_grid_cell_json(std::string const &cell_type, cell_map<sir, mc> &map, std::string const &delay_id,
-                            nlohmann::json const &config) override {
-        if (cell_type == "hoya_age") {
-            auto conf = config.get<typename hoya_cell<T>::config_type>();
-            this->template add_cell<hoya_cell>(map, delay_id, conf);
-        } else throw std::bad_typeid();
-    }
+struct mc {
+    std::vector<float> connection;
+    std::vector<float> movement;
+    mc() : connection({ 0 }), movement({ 0 }) {}  // a default constructor is required
+    mc(std::vector<float> &c, std::vector<float> &m) : connection(c), movement(m) {}
 };
 
-#endif //CADMIUM_CELLDEVS_HOYA_COUPLED_HPP
+// Required for creating movement-connection objects from JSON file
+[[maybe_unused]] void from_json(const nlohmann::json& j, mc &m) {
+    j.at("connection").get_to(m.connection);
+    j.at("movement").get_to(m.movement);
+}
+
+#endif //PANDEMIC_HOYA_2002_VICINITY_HPP
