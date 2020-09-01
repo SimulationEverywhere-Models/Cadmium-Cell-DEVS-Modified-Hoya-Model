@@ -8,7 +8,8 @@ https://www.sciencedirect.com/science/article/pii/S0096300306009295
 This implementation adds several features which allow more real-world factors to be accounted for. See the Parameters section for more information.
 
 ## Compilation
-Note: A C++17 compliant compiler is required, along with the Cadmium library (available at: https://github.com/SimulationEverywhere/cadmium/tree/celldevs-json)
+Note: A C++17 compliant compiler is required, along with the Cadmium JSON library (available at: https://github.com/SimulationEverywhere/cadmium/tree/celldevs-json)
+- After setting up the repository, navigate to the "cadmium/" folder inside the reopsitory and switch to the "celldevs-json" branch
 
 Using the Terminal
 
