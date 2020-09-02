@@ -133,3 +133,13 @@ Lockdowns of this type will have no impact on the spread of the disease.
 - *disobedience* (array of decimals)
 	- The amount of people in each age group that disobey the lockdown rules.
 
+## To-Do List
+[o] Relabel sir to sird because it now keeps track of deaths as well
+[o] Change location of simulation results for main executable to a more convenient place
+[o] Include option to disable mask adoption (in response to infected population) and instead use static mask rates
+[o] Randomness
+	[x] Initial implementation
+	[o] Alter to match Binyamin's modified Zhong model
+	[o] Fix bug where cells use identical generators instead of the same one
+
+
