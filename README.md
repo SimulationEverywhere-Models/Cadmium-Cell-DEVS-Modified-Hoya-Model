@@ -133,6 +133,35 @@ Lockdowns of this type will have no impact on the spread of the disease.
 - *disobedience* (array of decimals)
 	- The amount of people in each age group that disobey the lockdown rules.
 
+### Randomness
+- *rand_type* (integer)
+	- Choose the method for variation in the infection, recovery, and death of new people.
+
+#### Type 0: Static (not random)
+This type of distribution is not random and will have no effect on the infection, recovery, and death rates.
+
+#### Type 1: Normal Distribution (bell curve)
+- *rand_mean* (decimal)
+	- The average value that the random factor will be (this should normally be about 1).
+- *rand_stddev* (decimal)
+	- The standard deviation of the bell curve (values closer to 0 will tend to generate results closer to the average).
+- *rand_seed* (decimal)
+	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
+
+#### Type 2: Uniform Distribution (equal probability)
+- *rand_upper* (decimal)
+	- The upper bound of the range the random factor can be chosen from.
+- *rand_lower* (decimal)
+	- The lower bound of the range the random factor can be chosen from.
+- *rand_seed* (decimal)
+	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
+
+#### Type 3: Exponential Distribution (more likely small)
+- *rand_avg_occurence_rate* (decimal)
+	- Higher values tend to yield results that are more likely to be small.
+- *rand_seed* (decimal)
+	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
+
 ## To-Do List
 [o] Relabel sir to sird because it now keeps track of deaths as well
 
@@ -146,6 +175,5 @@ Lockdowns of this type will have no impact on the spread of the disease.
 	
 	[o] Alter to match Binyamin's modified Zhong model
 	
-	[o] Fix bug where cells use identical generators instead of the same one
-
+	[x] Fix bug where cells use identical generators instead of the same one
 
