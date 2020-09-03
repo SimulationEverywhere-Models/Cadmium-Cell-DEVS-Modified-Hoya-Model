@@ -49,6 +49,8 @@ def prepare_output_directory(scenarios, output_path = './output'):
         
         _make_directory(scenario_directory)
         
+        shutil.copy(scenarios[name], scenario_directory)
+        
         _make_directory(os.path.join(scenario_directory, 'epidemic_graphs'))
         _make_directory(os.path.join(scenario_directory, 'images_and_video'))
         _make_directory(os.path.join(scenario_directory, 'simulation_logs'))

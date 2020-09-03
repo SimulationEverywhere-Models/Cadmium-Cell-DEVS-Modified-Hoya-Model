@@ -157,6 +157,9 @@ def main(file_location = "../simulation_logs"):
     plt.savefig(base_name + "_lines_sep.png")
     
     
+    plt.close('all')
+    
+    
     df_vis.to_pickle(base_name + ".pickle")
 
 if __name__ == "__main__":
