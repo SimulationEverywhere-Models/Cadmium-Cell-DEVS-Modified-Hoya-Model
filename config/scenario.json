@@ -34,12 +34,12 @@
 				"phase_thresholds": [ 0.00, 0.05, 0.10 ],
 				"threshold_buffers": [ 0.00, 0.02, 0.05 ],
 				"disobedience": [ 0.0, 0.0, 0.0, 0.0 ],
-				"rand_type": 0,
+				"rand_type": 1,
 				"rand_mean": 1.0,
-				"rand_stddev": 0.5,
-				"rand_upper": 0.5,
-				"rand_lower": 2.0,
-				"rand_avg_occurence_rate": 5.0,
+				"rand_stddev": 0.3,
+				"rand_upper": 2.0,
+				"rand_lower": 0.5,
+				"rand_avg_occurence_rate": 1.5,
 				"rand_seed": 1337.42,
 				"precision": 1000
 			}

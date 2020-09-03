@@ -42,6 +42,8 @@ using nlohmann::json;
 using namespace cadmium::celldevs;
 
 
+static std::default_random_engine rand_gen = std::default_random_engine();
+
 template <typename T>
 class hoya_cell : public grid_cell<T, sir, mc> {
 public:
@@ -52,6 +54,7 @@ public:
     using grid_cell<T, sir, mc>::neighbors;
 
 	using config_type = config;  // IMPORTANT FOR THE JSON
+	
 	std::vector<float> susceptibility;
 	std::vector<float> virulence;
 	std::vector<float> recovery;
@@ -67,7 +70,6 @@ public:
 	
 	unsigned int rand_type;
 	float rand_seed;
-	mutable std::default_random_engine rand_gen;
 	mutable std::normal_distribution<float> rand_normal_dist;
 	mutable std::uniform_real_distribution<float> rand_uniform_dist;
 	mutable std::exponential_distribution<float> rand_exponential_dist;
@@ -118,7 +120,7 @@ public:
 				lockdown = new NoLockdown();
 		}
 		
-		rand_gen = std::default_random_engine(rand_seed);
+		rand_gen.seed();
 		switch(rand_type) {
 			case 1:
 				rand_normal_dist = std::normal_distribution<float>(config.rand_mean, config.rand_stddev);
