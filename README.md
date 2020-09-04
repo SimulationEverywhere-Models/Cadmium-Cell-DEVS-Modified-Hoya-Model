@@ -163,24 +163,10 @@ This type of distribution is not random and will have no effect on the infection
 	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
 
 ## To-Do List
-[x] Relabel sir to sird because it now keeps track of deaths as well
-
-[x] Document automation scripts
-	[x] Make a guide to using the automation scripts
-	
-	[x] Document the functions in the automation scripts
-
 [o] Change location of simulation results for main executable to a more convenient place
-	[o] Make the default location a folder within the repository
+	[x] Make the default location a folder within the repository
 	
 	[o] Add ability to set output location at runtime (?)
 
 [o] Include option to disable mask adoption (in response to infected population) and instead use static mask rates
-
-[o] Randomness
-	[x] Initial implementation
-	
-	[o] Alter to match Binyamin's modified Zhong model
-	
-	[x] Fix bug where cells use identical generators instead of the same one
 
