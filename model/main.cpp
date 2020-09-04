@@ -60,12 +60,14 @@ using logger_top=logger::multilogger<state, log_messages, global_time_mes, globa
 
 
 int main(int argc, char ** argv) {
+    cout << "CHECKPOINT 1";
     if (argc < 2) {
         cout << "Program used with wrong parameters. The program must be invoked as follows:";
         cout << argv[0] << " SCENARIO_CONFIG.json [MAX_SIMULATION_TIME (default: 500)]" << endl;
         return -1;
     }
 
+    cout << "CHECKPOINT 2";
     hoya_coupled<TIME> test = hoya_coupled<TIME>("pandemic_hoya_age_json");
     std::string scenario_config_file_path = argv[1];
     test.add_lattice_json(scenario_config_file_path);
