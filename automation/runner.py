@@ -7,6 +7,9 @@ import notebook
 
 def gather_scenarios(scenario_path = './scenarios'):
     """
+    Looks at the scenario files and generates a dict that maps the names of the
+    scenarios to the path of the corresponding scenario file
+    
     scenario_path: string
         The path to the directory containing the scenario files
     
@@ -35,12 +38,17 @@ def _make_directory(directory_name):
 
 def prepare_output_directory(scenarios, output_path = './output'):
     """
-    output_path:
-    scenarios:
+    Creates the necessary folders for each scenario's output
     
-    raises:
+    output_path: string
+        The path to the directory that the simulation results should be stored
+        in
+    scenarios: dict
+        A dictionary mapping the names of scenarios to their filepaths
     
-    returns:
+    raises: Exception
+        If, when trying to prepare the output directory, a non-directory file
+        exists with the name of a directory that needs to be created or accessed
     """
     _make_directory(output_path)
     
@@ -57,20 +65,25 @@ def prepare_output_directory(scenarios, output_path = './output'):
         _make_directory(os.path.join(scenario_directory, 'visualization_files'))
 
 def _move_simulation_results(scenario_directory, results_path = '../simulation_results/pandemic_hoya_age_json'):
-    """
-    scenario_directory:
-    results_path:
-    """
     shutil.copy(os.path.join(results_path, 'hoya_age.json'), os.path.join(scenario_directory, 'simulation_logs', 'hoya_age.json'))
     shutil.copy(os.path.join(results_path, 'output_messages.txt'), os.path.join(scenario_directory, 'simulation_logs', 'output_messages.txt'))
     shutil.copy(os.path.join(results_path, 'state.txt'), os.path.join(scenario_directory, 'simulation_logs', 'state.txt'))    
 
 def run_simulations(scenarios, executable_path = '..', output_path = './output', max_time = 1000):
     """
-    scenarios:
-    executable_path:
+    Runs all of the simulations sequentially and stores the generated files
+    in folders for each scenario
+    
+    scenarios: dict
+        A dictionary mapping the names of scenarios to their filepaths
+    executable_path: string
+        The path to the executable that runs the simulation
     output_path:
+        The path to the directory that the simulation results should be stored
+        in 
     max_time:
+        The maximum number of time steps the simulator will run before stopping
+        early
     """
     #executable_path = os.path.abspath(executable_path)
     results_path = "../simulation_results/pandemic_hoya_age_json"

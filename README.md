@@ -165,10 +165,10 @@ This type of distribution is not random and will have no effect on the infection
 ## To-Do List
 [o] Relabel sir to sird because it now keeps track of deaths as well
 
-[o] Document automation scripts
+[x] Document automation scripts
 	[x] Make a guide to using the automation scripts
 	
-	[o] Document the functions in the automation scripts
+	[x] Document the functions in the automation scripts
 
 [o] Change location of simulation results for main executable to a more convenient place
 	[o] Make the default location a folder within the repository
