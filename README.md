@@ -163,10 +163,11 @@ This type of distribution is not random and will have no effect on the infection
 	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
 
 ## To-Do List
-[o] Change location of simulation results for main executable to a more convenient place
-	[x] Make the default location a folder within the repository
-	
-	[o] Add ability to set output location at runtime (?)
+- [ ] Change location of simulation results for main executable to a more convenient place
 
-[o] Include option to disable mask adoption (in response to infected population) and instead use static mask rates
+	- [x] Make the default location a folder within the repository
+
+	- [ ] Add ability to set output location at runtime (?)
+
+- [ ] Include option to disable mask adoption (in response to infected population) and instead use static mask rates
 
