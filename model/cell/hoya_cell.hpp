@@ -45,13 +45,13 @@ using namespace cadmium::celldevs;
 static std::default_random_engine rand_gen = std::default_random_engine();
 
 template <typename T>
-class hoya_cell : public grid_cell<T, sir, mc> {
+class hoya_cell : public grid_cell<T, sird, mc> {
 public:
-    using grid_cell<T, sir, mc>::cell_id;
-    using grid_cell<T, sir, mc>::simulation_clock;
-    using grid_cell<T, sir, mc>::state;
-    using grid_cell<T, sir, mc>::map;
-    using grid_cell<T, sir, mc>::neighbors;
+    using grid_cell<T, sird, mc>::cell_id;
+    using grid_cell<T, sird, mc>::simulation_clock;
+    using grid_cell<T, sird, mc>::state;
+    using grid_cell<T, sird, mc>::map;
+    using grid_cell<T, sird, mc>::neighbors;
 
 	using config_type = config;  // IMPORTANT FOR THE JSON
 	
@@ -78,11 +78,11 @@ public:
 	float precision = 100;
 
 
-	hoya_cell() : grid_cell<T, sir, mc>()  {}
+	hoya_cell() : grid_cell<T, sird, mc>()  {}
 
-	hoya_cell(cell_position const &cell_id, cell_unordered<mc> const &neighborhood, sir &initial_state,
-              cell_map<sir, mc> const &map_in, std::string const &delay_id, config &config) :
-			    grid_cell<T, sir, mc>(cell_id, neighborhood, initial_state, map_in, delay_id) {
+	hoya_cell(cell_position const &cell_id, cell_unordered<mc> const &neighborhood, sird &initial_state,
+              cell_map<sird, mc> const &map_in, std::string const &delay_id, config &config) :
+			    grid_cell<T, sird, mc>(cell_id, neighborhood, initial_state, map_in, delay_id) {
 		susceptibility = config.susceptibility;
 		virulence = config.virulence;
 		recovery = config.recovery;
@@ -159,7 +159,7 @@ public:
 	}
 
 	// user must define this function. It returns the next cell state and its corresponding timeout
-	[[nodiscard]] sir local_computation() const override {
+	[[nodiscard]] sird local_computation() const override {
 		auto res = state.current_state;
 		auto new_i = new_infections(res);
 		auto new_r = new_recoveries(res);
@@ -177,16 +177,16 @@ public:
 	}
 
 	// It returns the delay to communicate cell's new state.
-	T output_delay(sir const &cell_state) const override { return 1; }
+	T output_delay(sird const &cell_state) const override { return 1; }
 
-	[[nodiscard]] std::vector<float> new_infections(sir const &last_state) const {
+	[[nodiscard]] std::vector<float> new_infections(sird const &last_state) const {
 		std::vector<float> new_inf = {};
 		std::vector<float> virulence_factors = std::vector<float>(n_age_segments(), 0.0);
 		std::vector<float> susceptibility_factors = std::vector<float>(n_age_segments(), 0.0);
 		float total_virulence_factor = 0.0;
 
 		for(auto neighbor: neighbors) {
-			sir neighbor_state = state.neighbors_state.at(neighbor);
+			sird neighbor_state = state.neighbors_state.at(neighbor);
 			mc neighbor_vicinity = state.neighbors_vicinity.at(neighbor);
 			std::vector<float> mobility = find_mobility_factors(neighbor_vicinity);
 			std::vector<float> neighbor_virulence_factors = find_virulence_factors(neighbor_state);
@@ -217,7 +217,7 @@ public:
 		return new_inf;
 	}
 
-	[[nodiscard]] std::vector<float> new_recoveries(sir const &last_state) const {
+	[[nodiscard]] std::vector<float> new_recoveries(sird const &last_state) const {
 		std::vector<float> new_r = std::vector<float>();
 		for(int i = 0; i < n_age_segments(); i++) {
 			float new_recovered_amount = last_state.infected[i] * recovery[i] * random();
@@ -226,7 +226,7 @@ public:
 		return new_r;
 	}
 
-	[[nodiscard]] std::vector<float> new_deaths(sir const &last_state) const {
+	[[nodiscard]] std::vector<float> new_deaths(sird const &last_state) const {
 		std::vector<float> new_d = std::vector<float>();
 		float total_infected = 0;
 
@@ -252,7 +252,7 @@ public:
 		return new_d;
 	}
 
-	[[nodiscard]] std::vector<float> find_virulence_factors(sir const &last_state) const {
+	[[nodiscard]] std::vector<float> find_virulence_factors(sird const &last_state) const {
 		std::vector<float> virulence_factors = {};
 		std::vector<float> mask_rates = find_mask_rates(last_state);
 		std::vector<float> lockdown_factors = lockdown->new_lockdown_factors(last_state);
@@ -266,7 +266,7 @@ public:
 		return virulence_factors;
 	}
 
-	[[nodiscard]] std::vector<float> find_susceptibility_factors(sir const &last_state) const {
+	[[nodiscard]] std::vector<float> find_susceptibility_factors(sird const &last_state) const {
 		std::vector<float> susceptibility_factors = {};
 		std::vector<float> mask_rates = find_mask_rates(last_state);
 
@@ -288,7 +288,7 @@ public:
 		return mobility_factors;
 	}
 
-	[[nodiscard]] std::vector<float> find_mask_rates(sir const &last_state) const {
+	[[nodiscard]] std::vector<float> find_mask_rates(sird const &last_state) const {
 			std::vector<float> mask_rates = std::vector<float>();
 			float total_infected = 0;
 			for(int i = 0; i < n_age_segments(); i++) {

@@ -163,7 +163,7 @@ This type of distribution is not random and will have no effect on the infection
 	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
 
 ## To-Do List
-[o] Relabel sir to sird because it now keeps track of deaths as well
+[x] Relabel sir to sird because it now keeps track of deaths as well
 
 [x] Document automation scripts
 	[x] Make a guide to using the automation scripts
