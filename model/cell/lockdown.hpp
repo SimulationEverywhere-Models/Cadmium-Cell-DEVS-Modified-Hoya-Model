@@ -31,19 +31,19 @@
 class Lockdown {
 public:
     virtual ~Lockdown() = default;
-    [[nodiscard]] virtual std::vector<float> new_lockdown_factors(sir const &last_state) const { return {}; };
-    [[nodiscard]] virtual unsigned int next_phase(int simulation_clock, sir const &last_state) const { return 0; };
+    [[nodiscard]] virtual std::vector<float> new_lockdown_factors(sird const &last_state) const { return {}; };
+    [[nodiscard]] virtual unsigned int next_phase(int simulation_clock, sird const &last_state) const { return 0; };
 };
 
 class NoLockdown: public Lockdown {
 public:
     NoLockdown() = default;
 
-    [[nodiscard]] std::vector<float> new_lockdown_factors(sir const &last_state) const override {
+    [[nodiscard]] std::vector<float> new_lockdown_factors(sird const &last_state) const override {
         return std::vector<float>(last_state.susceptible.size(), 1); // Movement is not limited (1x normal)
     }
 
-    [[nodiscard]] unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
+    [[nodiscard]] unsigned int next_phase(int simulation_clock, sird const &last_state) const override {
         return 0;
     }
 };
@@ -63,7 +63,7 @@ public:
         }
     }
 
-    [[nodiscard]] std::vector<float> new_lockdown_factors(sir const &last_state) const override {
+    [[nodiscard]] std::vector<float> new_lockdown_factors(sird const &last_state) const override {
         std::vector<float> lockdown_factors = {};
         for(int i = 0; i < last_state.infected.size(); i++) {
             double age_group_lockdown_factor = disobedience.at(i)
@@ -73,7 +73,7 @@ public:
         return lockdown_factors;
     }
 
-    [[nodiscard]] unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
+    [[nodiscard]] unsigned int next_phase(int simulation_clock, sird const &last_state) const override {
         int aux = simulation_clock % days_sum;
         int i = 0;
         while (aux >= phase_durations.at(i)) {
@@ -92,7 +92,7 @@ public:
     ReactionContinuousLockdown(std::vector<std::vector<float>> &lr, float &la, std::vector<float> &d):
         lockdown_rates(lr), lockdown_adoption(la), disobedience(d) {}
 
-    [[nodiscard]] std::vector<float> new_lockdown_factors(sir const &last_state) const override {
+    [[nodiscard]] std::vector<float> new_lockdown_factors(sird const &last_state) const override {
         std::vector<float> lockdown_factors = {};
         float total_infected = last_state.infected_ratio();
         double lockdown_strength;
@@ -107,7 +107,7 @@ public:
         return lockdown_factors;
     }
 
-    [[nodiscard]] unsigned int next_phase(int simulation_clock, sir const &last_state) const override { return 0; }
+    [[nodiscard]] unsigned int next_phase(int simulation_clock, sird const &last_state) const override { return 0; }
 };
 
 
@@ -117,12 +117,12 @@ class ReactionPhaseLockdown: public Lockdown {
     const std::vector<float> threshold_buffers;
     const std::vector<float> disobedience;
 
-    [[nodiscard]] bool shouldGoToNextPhase(sir const &last_state) const {
+    [[nodiscard]] bool shouldGoToNextPhase(sird const &last_state) const {
         return (last_state.phase + 1 < phase_thresholds.size()
             && last_state.infected_ratio() >= phase_thresholds[last_state.phase + 1]);
     }
 
-    [[nodiscard]] bool shouldGoToPreviousPhase(sir const &last_state) const {
+    [[nodiscard]] bool shouldGoToPreviousPhase(sird const &last_state) const {
         return (last_state.phase > 0
             && (last_state.infected_ratio() + threshold_buffers[last_state.phase]) < phase_thresholds[last_state.phase]);
     }
@@ -131,7 +131,7 @@ public:
     ReactionPhaseLockdown(std::vector<std::vector<float>> &lr, std::vector<float> &pt, std::vector<float> &tb,
                           std::vector<float> &d): lockdown_rates(lr), phase_thresholds(pt), threshold_buffers(tb), disobedience(d) {}
 
-    [[nodiscard]] std::vector<float> new_lockdown_factors(sir const &last_state) const override {
+    [[nodiscard]] std::vector<float> new_lockdown_factors(sird const &last_state) const override {
         std::vector<float> lockdown_factors = {};
         for(int i = 0; i < last_state.infected.size(); i++) {
             double age_group_lockdown_factor = disobedience.at(i)
@@ -141,7 +141,7 @@ public:
         return lockdown_factors;
     }
 
-    [[nodiscard]] unsigned int next_phase(int simulation_clock, sir const &last_state) const override {
+    [[nodiscard]] unsigned int next_phase(int simulation_clock, sird const &last_state) const override {
         unsigned int temp_phase = last_state.phase;
         if(shouldGoToNextPhase(last_state)) {
             temp_phase++;

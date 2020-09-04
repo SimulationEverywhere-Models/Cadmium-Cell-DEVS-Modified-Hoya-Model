@@ -1,4 +1,4 @@
-# JSON-configurable Cell-DEVS Hoya model with age-separated population, separation between virulence and susceptibility, deaths, infected capacity,  quarantines, masks, and lockdowns
+# JSON-configurable Cell-DEVS Hoya model with age-separated population, separation between virulence and susceptibility, deaths, infected capacity, masks, and lockdowns
 
 ## Info
 This is a modified version of the Hoya model. The original model that this implementation is based off of can be found at:
@@ -163,17 +163,11 @@ This type of distribution is not random and will have no effect on the infection
 	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
 
 ## To-Do List
-[o] Relabel sir to sird because it now keeps track of deaths as well
+- [ ] Change location of simulation results for main executable to a more convenient place
 
-[o] Change location of simulation results for main executable to a more convenient place
+	- [x] Make the default location a folder within the repository
 
-[o] Include option to disable mask adoption (in response to infected population) and instead use static mask rates
+	- [ ] Add ability to set output location at runtime (?)
 
-[o] Randomness
-
-	[x] Initial implementation
-	
-	[o] Alter to match Binyamin's modified Zhong model
-	
-	[x] Fix bug where cells use identical generators instead of the same one
+- [ ] Include option to disable mask adoption (in response to infected population) and instead use static mask rates
 

@@ -33,15 +33,15 @@
 #include "cell/hoya_cell.hpp"
 
 template <typename T>
-class hoya_coupled : public cadmium::celldevs::grid_coupled<T, sir, mc> {
+class hoya_coupled : public cadmium::celldevs::grid_coupled<T, sird, mc> {
 public:
 
-    explicit hoya_coupled(std::string const &id) : grid_coupled<T, sir, mc>(id){}
+    explicit hoya_coupled(std::string const &id) : grid_coupled<T, sird, mc>(id){}
 
     template <typename X>
     using cell_unordered = std::unordered_map<std::string,X>;
 
-    void add_grid_cell_json(std::string const &cell_type, cell_map<sir, mc> &map, std::string const &delay_id,
+    void add_grid_cell_json(std::string const &cell_type, cell_map<sird, mc> &map, std::string const &delay_id,
                             nlohmann::json const &config) override {
         if (cell_type == "hoya_age") {
             auto conf = config.get<typename hoya_cell<T>::config_type>();
