@@ -29,6 +29,7 @@
 #define CADMIUM_CELLDEVS_PANDEMIC_CELL_HPP
 
 #include <cmath>
+#include <random>
 #include <nlohmann/json.hpp>
 #include <cadmium/celldevs/cell/grid_cell.hpp>
 
@@ -41,6 +42,8 @@ using nlohmann::json;
 using namespace cadmium::celldevs;
 
 
+static std::default_random_engine rand_gen = std::default_random_engine();
+
 template <typename T>
 class hoya_cell : public grid_cell<T, sir, mc> {
 public:
@@ -51,6 +54,7 @@ public:
     using grid_cell<T, sir, mc>::neighbors;
 
 	using config_type = config;  // IMPORTANT FOR THE JSON
+	
 	std::vector<float> susceptibility;
 	std::vector<float> virulence;
 	std::vector<float> recovery;
@@ -63,6 +67,13 @@ public:
 	float mask_adoption;
 	unsigned int lockdown_type;
 	Lockdown *lockdown;
+	
+	unsigned int rand_type;
+	float rand_seed;
+	mutable std::normal_distribution<float> rand_normal_dist;
+	mutable std::uniform_real_distribution<float> rand_uniform_dist;
+	mutable std::exponential_distribution<float> rand_exponential_dist;
+	
 	std::vector<float> age_ratio;
 	float precision = 100;
 
@@ -85,6 +96,9 @@ public:
 		precision = config.precision;
 		age_ratio = std::vector<float>();
 		auto s = state.current_state;
+		
+		rand_type = config.rand_type;
+		rand_seed = config.rand_seed;
 
 		lockdown_type = config.lockdown_type;
 
@@ -105,10 +119,38 @@ public:
 				lockdown_type = 0;
 				lockdown = new NoLockdown();
 		}
+		
+		rand_gen.seed();
+		switch(rand_type) {
+			case 1:
+				rand_normal_dist = std::normal_distribution<float>(config.rand_mean, config.rand_stddev);
+				break;
+			case 2:
+				rand_uniform_dist = std::uniform_real_distribution<float>(config.rand_lower, config.rand_upper);
+				break;
+			case 3:
+				rand_exponential_dist = std::exponential_distribution<float>(config.rand_avg_occurence_rate);
+				break;
+			default:
+				rand_type = 0;
+		}
 
 		for (int i = 0; i < n_age_segments(); i++) {
 			float ratio = std::round(precision * (s.susceptible[i] + s.infected[i] + s.recovered[i] + s.deceased[i])) / precision;
 			age_ratio.push_back(ratio);
+		}
+	}
+	
+	[[nodiscard]] float random() const {
+		switch(rand_type) {
+		case 1:
+			return rand_normal_dist(rand_gen);
+		case 2:
+			return rand_uniform_dist(rand_gen);
+		case 3:
+			return rand_exponential_dist(rand_gen);
+		default:
+			return 1.0;
 		}
 	}
 
@@ -169,7 +211,7 @@ public:
 		}
 
 		for(int i = 0; i < n_age_segments(); i++) {
-			float new_infected_amount = last_state.susceptible[i] * total_virulence_factor * susceptibility_factors[i] / (float)last_state.population;
+			float new_infected_amount = last_state.susceptible[i] * total_virulence_factor * susceptibility_factors[i] / (float)last_state.population * random();
 			new_inf.push_back(std::min(last_state.susceptible[i], new_infected_amount));
 		}
 		return new_inf;
@@ -178,7 +220,8 @@ public:
 	[[nodiscard]] std::vector<float> new_recoveries(sir const &last_state) const {
 		std::vector<float> new_r = std::vector<float>();
 		for(int i = 0; i < n_age_segments(); i++) {
-			new_r.push_back(last_state.infected[i] * recovery[i]);
+			float new_recovered_amount = last_state.infected[i] * recovery[i] * random();
+			new_r.push_back(std::min(last_state.infected[i], new_recovered_amount));
 		}
 		return new_r;
 	}
@@ -190,7 +233,7 @@ public:
 		// Apply the regular mortality rate
 		for(int i = 0; i < n_age_segments(); i++) {
 			total_infected += last_state.infected[i];
-			new_d.push_back(last_state.infected[i] * mortality[i]);
+			new_d.push_back(last_state.infected[i] * mortality[i] * random());
 		}
 
 		// Increase mortality if too many people are infected

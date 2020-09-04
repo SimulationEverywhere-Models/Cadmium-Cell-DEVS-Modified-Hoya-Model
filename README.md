@@ -8,7 +8,8 @@ https://www.sciencedirect.com/science/article/pii/S0096300306009295
 This implementation adds several features which allow more real-world factors to be accounted for. See the Parameters section for more information.
 
 ## Compilation
-Note: A C++17 compliant compiler is required, along with the Cadmium library (available at: https://github.com/SimulationEverywhere/cadmium/tree/celldevs-json)
+Note: A C++17 compliant compiler is required, along with the Cadmium JSON library (available at: https://github.com/SimulationEverywhere/cadmium/tree/celldevs-json)
+- After setting up the repository, navigate to the "cadmium/" folder inside the reopsitory and switch to the "celldevs-json" branch
 
 Using the Terminal
 
@@ -131,4 +132,48 @@ Lockdowns of this type will have no impact on the spread of the disease.
 	- How much the infection needs to fall below each phase threshold before the cell will revert to the lower phase.
 - *disobedience* (array of decimals)
 	- The amount of people in each age group that disobey the lockdown rules.
+
+### Randomness
+- *rand_type* (integer)
+	- Choose the method for variation in the infection, recovery, and death of new people.
+
+#### Type 0: Static (not random)
+This type of distribution is not random and will have no effect on the infection, recovery, and death rates.
+
+#### Type 1: Normal Distribution (bell curve)
+- *rand_mean* (decimal)
+	- The average value that the random factor will be (this should normally be about 1).
+- *rand_stddev* (decimal)
+	- The standard deviation of the bell curve (values closer to 0 will tend to generate results closer to the average).
+- *rand_seed* (decimal)
+	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
+
+#### Type 2: Uniform Distribution (equal probability)
+- *rand_upper* (decimal)
+	- The upper bound of the range the random factor can be chosen from.
+- *rand_lower* (decimal)
+	- The lower bound of the range the random factor can be chosen from.
+- *rand_seed* (decimal)
+	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
+
+#### Type 3: Exponential Distribution (more likely small)
+- *rand_avg_occurence_rate* (decimal)
+	- Higher values tend to yield results that are more likely to be small.
+- *rand_seed* (decimal)
+	- The seed provided to the random generator. The same scenario run with the same seed should generate the same results.
+
+## To-Do List
+[o] Relabel sir to sird because it now keeps track of deaths as well
+
+[o] Change location of simulation results for main executable to a more convenient place
+
+[o] Include option to disable mask adoption (in response to infected population) and instead use static mask rates
+
+[o] Randomness
+
+	[x] Initial implementation
+	
+	[o] Alter to match Binyamin's modified Zhong model
+	
+	[x] Fix bug where cells use identical generators instead of the same one
 
