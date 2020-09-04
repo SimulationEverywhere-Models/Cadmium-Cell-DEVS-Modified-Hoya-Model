@@ -1,4 +1,4 @@
-# JSON-configurable Cell-DEVS Hoya model with age-separated population, separation between virulence and susceptibility, deaths, infected capacity,  quarantines, masks, and lockdowns
+# JSON-configurable Cell-DEVS Hoya model with age-separated population, separation between virulence and susceptibility, deaths, infected capacity, masks, and lockdowns
 
 ## Info
 This is a modified version of the Hoya model. The original model that this implementation is based off of can be found at:
