@@ -82,9 +82,9 @@ public:
 		auto new_d = new_deaths(res);
 
 		for (int i = 0; i < n_age_segments(); i++) {
-			res.recovered[i] = std::ceil((res.recovered[i] + new_r[i]) * precision) / precision;
-			res.deceased[i] = std::ceil((res.deceased[i] + new_d[i]) * precision) / precision;
-			res.infected[i] = std::ceil((res.infected[i] + new_i[i] - (new_r[i] + new_d[i])) * precision) / precision;
+			res.recovered[i] = std::round((res.recovered[i] + new_r[i]) * precision) / precision;
+			res.deceased[i] = std::round((res.deceased[i] + new_d[i]) * precision) / precision;
+			res.infected[i] = std::round((res.infected[i] + new_i[i] - (new_r[i] + new_d[i])) * precision) / precision;
 			res.susceptible[i] = 1 - (res.recovered[i] + res.infected[i] + res.deceased[i]);
 		}
 		return res;
@@ -104,12 +104,13 @@ public:
             }
         }
 
+        if (n_effect > 0) {
+            int a = 1;
+        }
+
         auto new_inf = std::vector<float>();
         for (int n = 0; n < n_age_segments(); n++) {
             float ratio = n_effect / (float) last_state.population[n];
-            if (ratio > 1) {
-                ratio = 1;
-            }
             new_inf.push_back(last_state.susceptible[n] * susceptibility[n] * ratio);
         }
         return new_inf;
