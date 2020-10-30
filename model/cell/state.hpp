@@ -49,16 +49,59 @@ struct sird {
         return res;
     }
 
-    [[maybe_unused]] [[nodiscard]] float susceptible_ratio() const {
-        return sum_vector<float>(susceptible);
+    int total_population() const {
+        int res = 0;
+        for (auto const &p: population)
+            res += p;
+        return res;
     }
 
-    [[maybe_unused]] [[nodiscard]] float infected_ratio() const {
-        return sum_vector<float>(infected);
+    float susceptible_ratio(int i) const {
+        return susceptible[i] * population[i] / (float) total_population();
     }
 
-    [[maybe_unused]] [[nodiscard]] float recovered_ratio() const {
-        return sum_vector<float>(recovered);
+    float infected_ratio(int i) const {
+        return infected[i] * population[i] / (float) total_population();
+    }
+
+    float recovered_ratio(int i) const {
+        return recovered[i] * population[i] / (float) total_population();
+    }
+
+    float deceased_ratio(int i) const {
+        return deceased[i] * population[i] / (float) total_population();
+    }
+
+    float susceptible_ratio() const {
+        float res;
+        for (int i = 0; i < population.size(); i++) {
+            res += susceptible_ratio(i);
+        }
+        return res;
+    }
+
+    float infected_ratio() const {
+        float res;
+        for (int i = 0; i < population.size(); i++) {
+            res += infected_ratio(i);
+        }
+        return res;
+    }
+
+    float recovered_ratio() const {
+        float res;
+        for (int i = 0; i < population.size(); i++) {
+            res += recovered_ratio(i);
+        }
+        return res;
+    }
+
+    float deceased_ratio() const {
+        float res;
+        for (int i = 0; i < population.size(); i++) {
+            res += deceased_ratio(i);
+        }
+        return res;
     }
 };
 
@@ -67,36 +110,25 @@ inline bool operator != (const sird &x, const sird &y) {
     return x.population != y.population || x.susceptible != y.susceptible || x.infected != y.infected ||
            x.recovered != y.recovered || x.deceased != y.deceased;
 }
-// Required if you want to use transport delay (priority queue has to sort messages somehow)
-inline bool operator < (const sird& lhs, const sird& rhs){ return true; }
 
 // Required for printing the state of the cell
 std::ostream &operator << (std::ostream &os, const sird &x) {
-    float total_susceptible = 0.0;
-    float total_infected = 0.0;
-    float total_recovered = 0.0;
-    float total_deceased = 0.0;
+    os << "<" << x.total_population();
 
-    os << "<" << x.population;
-
-    for(float i : x.susceptible) {
-        total_susceptible += i;
-        os << "," << i;
+    for (int i = 0; i < x.population.size(); i++) {
+        os << "," << x.susceptible_ratio(i);
     }
-    for(float i : x.infected) {
-        total_infected += i;
-        os << "," << i;
+    for (int i = 0; i < x.population.size(); i++) {
+        os << "," << x.infected_ratio(i);
     }
-    for(float i : x.recovered) {
-        total_recovered += i;
-        os << "," << i;
+    for (int i = 0; i < x.population.size(); i++) {
+        os << "," << x.recovered_ratio(i);
     }
-    for(float i : x.deceased) {
-        total_deceased += i;
-        os << "," << i;
+    for (int i = 0; i < x.population.size(); i++) {
+        os << "," << x.deceased_ratio(i);
     }
 
-    os << "," << total_susceptible << "," << total_infected << "," << total_recovered << "," << total_deceased << ">";
+    os << "," << x.susceptible_ratio() << "," << x.infected_ratio() << "," << x.recovered_ratio() << "," << x.deceased_ratio() << ">";
     return os;
 }
 
