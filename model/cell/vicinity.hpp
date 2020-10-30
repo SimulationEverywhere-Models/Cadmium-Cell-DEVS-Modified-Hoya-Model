@@ -31,10 +31,11 @@
 #include <nlohmann/json.hpp>
 
 struct mc {
-    std::vector<float> connection;
+
+    float connection;
     std::vector<float> movement;
-    mc() : connection({ 0 }), movement({ 0 }) {}  // a default constructor is required
-    mc(std::vector<float> &c, std::vector<float> &m) : connection(c), movement(m) {}
+    mc() : connection(0), movement({0}) {}  // a default constructor is required
+    mc(float c, std::vector<float> &m) : connection(c), movement(m) {}
 };
 
 // Required for creating movement-connection objects from JSON file

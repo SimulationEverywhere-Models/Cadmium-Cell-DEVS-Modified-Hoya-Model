@@ -25,29 +25,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CADMIUM_CELLDEVS_HOYA_COUPLED_HPP
-#define CADMIUM_CELLDEVS_HOYA_COUPLED_HPP
+#ifndef PANDEMIC_HOYA_2002_HOYA_CONFIG_HPP
+#define PANDEMIC_HOYA_2002_HOYA_CONFIG_HPP
 
 #include <nlohmann/json.hpp>
-#include <cadmium/celldevs/coupled/grid_coupled.hpp>
-#include "cell/hoya_cell.hpp"
 
-template <typename T>
-class hoya_coupled : public cadmium::celldevs::grid_coupled<T, sird, mc> {
-public:
+struct hoya_config {
+    std::vector<float> susceptibility;
+    std::vector<float> virulence;
+    std::vector<float> recovery;
+    std::vector<float> mortality;
+    float precision;
 
-    explicit hoya_coupled(std::string const &id) : grid_coupled<T, sird, mc>(id){}
+    hoya_config(): susceptibility({1.0}), virulence({0.6}), recovery({0.4}), mortality({0.03}), precision(100) {}
 
-    template <typename X>
-    using cell_unordered = std::unordered_map<std::string,X>;
-
-    void add_grid_cell_json(std::string const &cell_type, cell_map<sird, mc> &map, std::string const &delay_id,
-                            nlohmann::json const &config) override {
-        if (cell_type == "hoya_age") {
-            auto conf = config.get<hoya_config>();
-            this->template add_cell<hoya_cell>(map, delay_id, conf);
-        } else throw std::bad_typeid();
-    }
+    hoya_config(std::vector<float> &s, std::vector<float> &v,
+                std::vector<float> &r, std::vector<float> &m, float &rao, float p):
+            susceptibility(s), virulence(v), recovery(r), mortality(m), precision(p) {}
 };
 
-#endif //CADMIUM_CELLDEVS_HOYA_COUPLED_HPP
+void from_json(const nlohmann::json& j, hoya_config &v) {
+    j.at("susceptibility").get_to(v.susceptibility);
+    j.at("virulence").get_to(v.virulence);
+    j.at("recovery").get_to(v.recovery);
+    j.at("mortality").get_to(v.mortality);
+    j.at("precision").get_to(v.precision);
+}
+
+#endif //PANDEMIC_HOYA_2002_HOYA_CONFIG_HPP

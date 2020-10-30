@@ -31,16 +31,15 @@
 #include <nlohmann/json.hpp>
 
 struct sird {
-    unsigned int population;
-    unsigned int phase;
+    std::vector<int> population;
     std::vector<float> susceptible;
     std::vector<float> infected;
     std::vector<float> recovered;
     std::vector<float> deceased;
 
-    sird() : population(0), susceptible({1}), infected({0}), recovered({0}), deceased({0}), phase(0) {}
-    sird(unsigned int pop, std::vector<float> &s, std::vector<float> &i, std::vector<float> &r, std::vector<float> &d) :
-            population(pop), susceptible(s), infected(i), recovered(r), deceased(d), phase(0) {}
+    sird() : population({0}), susceptible({1}), infected({0}), recovered({0}), deceased({0}){}
+    sird(std::vector<int> &pop, std::vector<float> &s, std::vector<float> &i, std::vector<float> &r, std::vector<float> &d) :
+            population(pop), susceptible(s), infected(i), recovered(r), deceased(d){}
 
     template <typename T>
     static T sum_vector(std::vector<T> const &v) {
@@ -62,6 +61,7 @@ struct sird {
         return sum_vector<float>(recovered);
     }
 };
+
 // Required for comparing states and detect any change
 inline bool operator != (const sird &x, const sird &y) {
     return x.population != y.population || x.susceptible != y.susceptible || x.infected != y.infected ||
@@ -77,7 +77,7 @@ std::ostream &operator << (std::ostream &os, const sird &x) {
     float total_recovered = 0.0;
     float total_deceased = 0.0;
 
-    os << "<" << x.population << "," << x.phase;
+    os << "<" << x.population;
 
     for(float i : x.susceptible) {
         total_susceptible += i;
